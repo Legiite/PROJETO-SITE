@@ -9,6 +9,7 @@ import ImageEditControl from './components/ImageEditControl';
 import { clearMedia, deleteMedia, getMedia, saveMedia } from './mediaStore';
 
 const PROFILE_KEY='ghostfolio.react.profile', WORKS_KEY='ghostfolio.react.works';
+const DENSITY_KEY='ghostfolio.layout-density-v1';
 function readJson(key,fallback){try{return JSON.parse(localStorage.getItem(key))||fallback}catch{return fallback}}
 function normalizeWork(work){return {...work,category:work.category||work.cat||'Trabalhos',text:(work.text||'').replace(/<br\s*\/?\s*>/gi,'\n'),kind:work.kind||'image'}}
 function fileUrl(file){return URL.createObjectURL(file)}
@@ -26,6 +27,7 @@ export default function App(){
   const [profile,setProfile]=useState(()=>{
     const saved=readJson(PROFILE_KEY,null)||readJson('ghostfolio.profile',{}),migrated={...saved};
     for(const key of ['name','handle','role','bio']){const legacy=localStorage.getItem(`ghostfolio.in${key[0].toUpperCase()}${key.slice(1)}`);if(!migrated[key]&&legacy)migrated[key]=legacy}
+    if(!localStorage.getItem(DENSITY_KEY)){if(migrated.design?.columns===3)migrated.design={...migrated.design,columns:4};localStorage.setItem(DENSITY_KEY,'1')}
     return {...Data,...migrated,socials:{...Data.socials,...(migrated.socials||{})},socialNames:{...Data.socialNames,...(migrated.socialNames||{})},socialIcons:{...(migrated.socialIcons||{})},design:{...Data.design,...(migrated.design||{})}};
   });
   const [works,setWorks]=useState(loadWorks);
