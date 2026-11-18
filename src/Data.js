@@ -32,11 +32,23 @@ const Data = {
     email: 'oi@ghoststudio.art'
   },
   socialIcons: {},
+  sections: {
+    avatar: true,
+    intro: true,
+    socials: true,
+    music: true,
+    commission: true,
+    quote: true,
+    portfolio: true,
+    footer: true
+  },
   design: {
     background: '#0b0710',
     surface: '#150d1e',
     accent: '#c041ff',
+    secondary: '#b9ff4a',
     text: '#f8f3fa',
+    palette: 'ghost',
     font: 'system',
     columns: 4,
     radius: 22
