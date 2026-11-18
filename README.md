@@ -39,6 +39,7 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - Seletor do destino do botão de orçamento (E-mail, Discord, Twitch, Instagram ou TikTok), com o canal e endereço exibidos abaixo do botão.
 - O texto do botão de orçamento e a explicação do destino podem ser editados no painel.
 - Modo de edição no próprio site: nome, usuário, especialidade e descrição são editados no lugar; cores, fundo, fonte e galeria ficam numa barra horizontal no topo.
+- A barra de edição começa compacta; opções de aparência aparecem ao abrir esse grupo.
 - Redes abrem os campos de link e nome no próprio cartão; lápis de foto e de arte aparecem no elemento durante a edição.
 - Atalhos separados para música e trabalhos; lápis grande aparece no centro da arte ao passar o mouse em modo de edição.
 - Prévia visual do site como visitante, que oculta os controles de edição durante a apresentação.
