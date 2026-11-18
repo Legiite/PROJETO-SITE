@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.3.0 — 2026-11-18
+- Adicionado editor visual de cores, tipografia, colunas e cantos da galeria.
+- Adicionado seletor para o destino de solicitações de orçamento, com destino visível sob o botão.
+- Adicionados vídeos MP4/WebM à galeria e música opcional com reprodução iniciada pelo visitante.
+- Mídias armazenadas no IndexedDB local para reduzir o limite de armazenamento do perfil.
+
 ## 0.2.2 — 2026-11-18
 - Troca da legenda permanente de foto por um lápis que aparece ao passar o mouse ou focar o avatar.
 
@@ -17,3 +23,4 @@
 
 ## 0.1.1 — 2026-11-18
 - Adicionados ícones e rótulos sociais e configuração de perfil centralizada.
+
