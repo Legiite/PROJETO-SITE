@@ -11,7 +11,15 @@ function readJson(key,fallback){try{return JSON.parse(localStorage.getItem(key))
 function normalizeWork(work){return {...work,category:work.category||work.cat||'Trabalhos',text:(work.text||'').replace(/<br\s*\/?\s*>/gi,'\n')}}
 
 export default function App(){
-  const [profile,setProfile]=useState(()=>{const saved=readJson(PROFILE_KEY,{});return {...Data,...saved,socials:{...Data.socials,...(saved.socials||{})}}});
+  const [profile,setProfile]=useState(()=>{
+    const saved=readJson(PROFILE_KEY,null)||readJson('ghostfolio.profile',{});
+    const migrated={...saved};
+    for(const key of ['name','handle','role','bio']){
+      const legacy=localStorage.getItem(`ghostfolio.in${key[0].toUpperCase()}${key.slice(1)}`);
+      if(!migrated[key]&&legacy)migrated[key]=legacy;
+    }
+    return {...Data,...migrated,socials:{...Data.socials,...(migrated.socials||{})}};
+  });
   const [works,setWorks]=useState(()=>{
     const previous=readJson('ghostfolio.works',null);
     return (readJson(WORKS_KEY,previous||Data.works)).map(normalizeWork);
@@ -62,3 +70,4 @@ export default function App(){
     <Editor open={editorOpen} onClose={()=>setEditorOpen(false)} profile={profile} setProfile={setProfile} onFiles={addFiles} onReset={reset}/>
   </div>;
 }
+
