@@ -31,7 +31,7 @@ export default function App(){
     return {...Data,...migrated,socials:{...Data.socials,...(migrated.socials||{})},socialNames:{...Data.socialNames,...(migrated.socialNames||{})},socialIcons:{...(migrated.socialIcons||{})},design:{...Data.design,...(migrated.design||{})}};
   });
   const [works,setWorks]=useState(loadWorks);
-  const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(false),[editorSection,setEditorSection]=useState('music'),[editMode,setEditMode]=useState(false),[editingSocial,setEditingSocial]=useState(''),[previewMode,setPreviewMode]=useState(false),[selected,setSelected]=useState(null),[editingWork,setEditingWork]=useState(false),[musicPlaying,setMusicPlaying]=useState(false);
+  const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(false),[editorSection,setEditorSection]=useState('music'),[editMode,setEditMode]=useState(false),[appearanceOpen,setAppearanceOpen]=useState(false),[editingSocial,setEditingSocial]=useState(''),[previewMode,setPreviewMode]=useState(false),[selected,setSelected]=useState(null),[editingWork,setEditingWork]=useState(false),[musicPlaying,setMusicPlaying]=useState(false);
   const audioRef=useRef(null);
 
   useEffect(()=>{
@@ -157,14 +157,35 @@ export default function App(){
   }
   const design=profile.design||Data.design;
   function openEditor(section='music'){setEditMode(false);setEditorSection(section);setEditorOpen(true)}
-  function toggleEditMode(){setEditorOpen(false);setEditingSocial('');setEditMode(current=>!current)}
+  function toggleEditMode(){setEditorOpen(false);setEditingSocial('');setAppearanceOpen(false);setEditMode(current=>!current)}
   function updateSocial(key,field,value){setProfile(current=>field==='name'?({...current,socialNames:{...current.socialNames,[key]:value}}):({...current,socials:{...current.socials,[key]:value}}))}
   const backgroundImage=profile.backgroundUrl||profile.backgroundRemoteUrl;
   const designStyle={'--site-bg':design.background,'--site-surface':design.surface,'--site-accent':design.accent,'--site-text':design.text,'--site-font':design.font==='serif'?'Georgia,serif':design.font==='mono'?'ui-monospace,monospace':'Inter,system-ui,sans-serif','--gallery-columns':String(design.columns),'--card-radius':`${design.radius}px`,...(backgroundImage?{backgroundImage:`linear-gradient(#0b071080,#0b071080),url("${backgroundImage}")`,backgroundSize:'cover',backgroundPosition:'center',backgroundAttachment:'fixed'}:{})};
 
   return <div className={`App${previewMode?' preview-mode':''}${editMode?' direct-edit-mode':''}`} style={designStyle}>
     <Header onEdit={toggleEditMode} editMode={editMode} brand={Data.HeaderTitle}/>
-    {editMode&&<div className="edit-mode-toolbar" role="toolbar" aria-label="Opções de edição do site"><div className="edit-toolbar-heading"><strong>Modo de edição</strong><span>Clique nos textos para mudá-los; ajuste o visual aqui.</span></div><label>Fundo<input type="color" value={design.background} onChange={event=>setProfile(current=>({...current,design:{...current.design,background:event.target.value}}))}/></label><label>Cartões<input type="color" value={design.surface} onChange={event=>setProfile(current=>({...current,design:{...current.design,surface:event.target.value}}))}/></label><label>Destaque<input type="color" value={design.accent} onChange={event=>setProfile(current=>({...current,design:{...current.design,accent:event.target.value}}))}/></label><label>Texto<input type="color" value={design.text} onChange={event=>setProfile(current=>({...current,design:{...current.design,text:event.target.value}}))}/></label><label>Fundo GIF<input type="file" accept="image/*" onChange={setBackground}/></label>{backgroundImage&&<button type="button" className="clear-site-background" onClick={clearBackground}>Limpar fundo</button>}<label>Fonte<select value={design.font} onChange={event=>setProfile(current=>({...current,design:{...current.design,font:event.target.value}}))}><option value="system">Legível</option><option value="serif">Clássica</option><option value="mono">Monoespaçada</option></select></label><label>Galeria<select value={design.columns} onChange={event=>setProfile(current=>({...current,design:{...current.design,columns:Number(event.target.value)}}))}><option value="2">2 colunas</option><option value="3">3 colunas</option><option value="4">4 colunas</option></select></label><label>Cantos<input type="range" min="0" max="40" value={design.radius} onChange={event=>setProfile(current=>({...current,design:{...current.design,radius:Number(event.target.value)}}))}/></label><button className="finish-edit" onClick={toggleEditMode}>Concluir</button></div>}
+    {editMode&&<div className="edit-mode-toolbar" role="toolbar" aria-label="Opções de edição do site">
+      <div className="edit-toolbar-main">
+        <div className="edit-toolbar-heading"><span className="edit-toolbar-mark">✎</span><div><strong>Seu site</strong><span>Edite os textos clicando neles.</span></div></div>
+        <div className="edit-toolbar-actions">
+          <button className={`toolbar-action ${appearanceOpen?'active':''}`} onClick={()=>setAppearanceOpen(open=>!open)} aria-expanded={appearanceOpen}>🎨 <span>Aparência</span><i>{appearanceOpen?'−':'+'}</i></button>
+          <label className="toolbar-action upload-background">▧ <span>Fundo / GIF</span><input type="file" accept="image/*" onChange={setBackground}/></label>
+          {backgroundImage&&<button type="button" className="clear-site-background" onClick={clearBackground} aria-label="Remover fundo">×</button>}
+          <button className="finish-edit" onClick={toggleEditMode}>Concluir</button>
+        </div>
+      </div>
+      {appearanceOpen&&<div className="appearance-panel">
+        <div className="appearance-colors">
+          <label><span>Fundo</span><input type="color" value={design.background} onChange={event=>setProfile(current=>({...current,design:{...current.design,background:event.target.value}}))}/></label>
+          <label><span>Cartões</span><input type="color" value={design.surface} onChange={event=>setProfile(current=>({...current,design:{...current.design,surface:event.target.value}}))}/></label>
+          <label><span>Destaque</span><input type="color" value={design.accent} onChange={event=>setProfile(current=>({...current,design:{...current.design,accent:event.target.value}}))}/></label>
+          <label><span>Texto</span><input type="color" value={design.text} onChange={event=>setProfile(current=>({...current,design:{...current.design,text:event.target.value}}))}/></label>
+        </div>
+        <label className="appearance-select">Fonte<select value={design.font} onChange={event=>setProfile(current=>({...current,design:{...current.design,font:event.target.value}}))}><option value="system">Legível</option><option value="serif">Clássica</option><option value="mono">Monoespaçada</option></select></label>
+        <label className="appearance-select">Galeria<select value={design.columns} onChange={event=>setProfile(current=>({...current,design:{...current.design,columns:Number(event.target.value)}}))}><option value="2">2 colunas</option><option value="3">3 colunas</option><option value="4">4 colunas</option></select></label>
+        <label className="appearance-range">Cantos<input type="range" min="0" max="40" value={design.radius} onChange={event=>setProfile(current=>({...current,design:{...current.design,radius:Number(event.target.value)}}))}/></label>
+      </div>}
+    </div>}
     <main>
       <section className="hero" id="profile">
         <div className="avatar" aria-label="Foto de perfil">
