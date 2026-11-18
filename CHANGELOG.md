@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.6.3 — 2026-11-18
+- Adicionadas oito paletas coerentes de cores, com prévia e ajuste individual de cada função visual.
+- As cores escolhidas sincronizam fundo, cartões, textos, links, destaques, botões, bordas e controles.
+- Contatos podem ser editados diretamente dentro do próprio cartão no modo de edição.
+- Adicionadas opções para mostrar ou ocultar blocos do portfólio, incluindo a chamada para orçamento.
+
 ## 0.6.2 — 2026-11-18
 - Refinado o modo de edição direta com bordas suaves e controles de ícone menos chamativos.
 - Tornado opcional o texto antes do destino do orçamento; sem texto, aparece só o canal e o endereço.
