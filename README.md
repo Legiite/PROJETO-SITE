@@ -31,6 +31,7 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - O avatar e os ícones de cada rede podem receber imagem personalizada; o mesmo lápis aparece ao passar o mouse.
 - Imagem ou GIF animado como fundo, com prévia, remoção e limite local de 20 MB.
 - A demonstração já abre com um GIF roxo no fundo e um fantasma animado na categoria Animações; ambos podem ser trocados no editor. Os dois exemplos são carregados do GIPHY.
+- Em telas grandes, o perfil e a galeria usam uma escala compacta com quatro artes por fileira para mostrar o portfólio quase todo sem rolagem longa.
 - A música começa pausada e mutada; o visitante ativa o som pelo botão “Ouvir música”.
 - Editor local para nome, usuário, especialidade, descrição, redes, cores, fonte, número de colunas e cantos dos cartões.
 - Seletor do destino do botão de orçamento (E-mail, Discord, Twitch, Instagram ou TikTok), com o canal e endereço exibidos abaixo do botão.
