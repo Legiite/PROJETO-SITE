@@ -8,6 +8,7 @@ function Artwork({work,onOpen}) {
     className={`art ${work.style||'uploaded'} ${work.data||work.mediaUrl?'has-upload':''}`} style={work.data?{backgroundImage:`url("${work.data}")`}:undefined}
     onClick={()=>onOpen(work)} onKeyDown={event=>event.key==='Enter'&&onOpen(work)} role="button" tabIndex="0" aria-label={`Ampliar ${work.title}`}>
     {work.kind==='video'&&work.mediaUrl ? <><video className="gallery-video" src={work.mediaUrl} muted playsInline preload="metadata"/><span className="video-badge">▶ Vídeo</span></> : <>{!work.data && !work.mediaUrl && (work.style==='emotes' ? <span className="emote-row"><span>👻</span><span>🥰</span><span>😠</span><span>😴</span></span> : <span className="emoji">{work.emoji||''}</span>)}{work.text && <span className="arttext">{work.text.split('\n').map((line,index)=><span key={index}>{line}</span>)}</span>}</>}
+    <button className="art-edit" aria-label={`Editar ${work.title}`} title="Editar trabalho" onClick={event=>{event.stopPropagation();onOpen(work,true)}}><span className="edit-symbol">✎</span><span className="edit-label">Editar este trabalho</span></button>
     <small>{work.title}</small>
   </motion.article>;
 }
