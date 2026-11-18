@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 const reveal={hidden:{opacity:0,y:38,scale:.97},visible:index=>({opacity:1,y:0,scale:1,transition:{duration:.65,delay:(index%3)*.12,ease:[.22,1,.36,1]}})};
 
 function Artwork({work,onOpen,index}) {
-  const reduceMotion=useReducedMotion(),imageUrl=work.mediaUrl||work.data;
+  const reduceMotion=useReducedMotion(),imageUrl=work.mediaUrl||work.data||work.remoteUrl;
   return <motion.article custom={index} variants={reveal} initial={reduceMotion?'visible':'hidden'} whileInView="visible" whileHover={reduceMotion?undefined:{y:-9,scale:1.018,transition:{duration:.22,ease:'easeOut'}}} viewport={{once:true,amount:.16}}
     className={`art ${work.style||'uploaded'} ${imageUrl?'has-upload':''}`} style={imageUrl&&work.kind!=='video'?{backgroundImage:`url("${imageUrl}")`}:undefined}
     onClick={()=>onOpen(work)} onKeyDown={event=>event.key==='Enter'&&onOpen(work)} role="button" tabIndex="0" aria-label={`Ampliar ${work.title}`}>
