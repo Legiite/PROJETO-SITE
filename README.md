@@ -28,12 +28,16 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - Botão `+` na galeria para adicionar várias imagens e atalho no editor.
 - Clique no avatar para escolher a foto de perfil.
 - Twitch, Instagram, TikTok, Discord e E-mail mostram ícone, nome do serviço e usuário/endereço embaixo.
-- Editor local para nome, usuário, especialidade, descrição, links e identificadores sociais.
+- Editor local para nome, usuário, especialidade, descrição, redes, cores, fonte, número de colunas e cantos dos cartões.
+- Seletor do destino do botão de orçamento (E-mail, Discord, Twitch, Instagram ou TikTok), com o canal e endereço exibidos abaixo do botão.
+- Upload de imagens e vídeos MP4/WebM na galeria; os vídeos abrem com controles no modal.
+- Música opcional com botão manual de reprodução. Não há reprodução automática.
 - Perfil base e obras de demonstração centralizados em `src/Data.js`.
-- O editor persiste alterações apenas no navegador atual usando `localStorage`.
+- Texto e preferências ficam em `localStorage`; fotos, artes, vídeos e música ficam em IndexedDB no navegador atual.
 
 ## Limitações
 
-Esta é uma demonstração estática. Login, banco de dados, publicação de alterações do editor e armazenamento compartilhado ainda não estão conectados. Os links `ghoststudio` são exemplos; informe seus endereços reais no editor. O atalho Discord fica desativado enquanto não houver um link de convite. Foto de perfil: até 1 MB. Imagens da galeria: até 3 MB cada. Tudo fica apenas neste navegador.
+Esta é uma demonstração estática. Login, banco de dados, publicação de alterações do editor e armazenamento compartilhado ainda não estão conectados. Personalizações e arquivos enviados ficam apenas neste navegador e não são sincronizados com outros dispositivos nem com visitantes do site publicado. Os links `ghoststudio` são exemplos; informe seus endereços reais no editor. Foto de perfil: até 5 MB. Imagens da galeria: até 25 MB cada; vídeos MP4/WebM: até 100 MB; música: até 30 MB.
 
 Veja [TESTING.md](TESTING.md), [SECURITY.md](SECURITY.md) e [ROADMAP.md](ROADMAP.md).
+
