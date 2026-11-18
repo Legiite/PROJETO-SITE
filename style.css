@@ -70,4 +70,39 @@ footer{border-color:var(--site-line);color:var(--site-muted)}footer b{color:var(
 .social-form-icon .image-edit-label{padding:5px 8px;background:var(--site-surface);color:var(--site-text);border:1px solid var(--site-line);font-size:10px}
 .direct-edit-mode .socials .social-card.is-editing:hover{outline:none}
 @media(max-width:650px){.socials .social-card.is-editing{width:min(100%,320px);flex:1 1 100%;min-height:158px}.palette-picker-heading{align-items:flex-start;flex-direction:column;gap:2px}}
+/* Blocos tipo LEGO: ocultar, mostrar, mover por arraste ou setas. */
+.lego-layout{display:flex;flex-direction:column;gap:10px;max-width:1560px;margin:0 auto;padding:14px 24px}
+.lego-block{position:relative;width:100%;min-width:0;text-align:center;border:1px solid transparent;border-radius:16px;transition:border-color .16s,background .16s,box-shadow .16s}
+.lego-block.is-moving{opacity:.58;outline:2px dashed var(--site-accent);outline-offset:2px}
+.lego-avatar{display:grid;place-items:center}.hero-intro{text-align:center}.lego-shortcuts,.lego-socials,.lego-music,.lego-commission,.lego-quote,.lego-quoteDestination,.lego-footer{display:flex;justify-content:center;align-items:center;flex-wrap:wrap}
+.lego-portfolio{padding-top:3px}.lego-footer footer{width:100%;margin:0}
+.lego-controls{position:relative;z-index:5;display:flex;justify-content:flex-end;gap:4px;margin:0 3px 4px;opacity:.92}
+.lego-controls button{display:grid;place-items:center;min-width:27px;height:25px;padding:0 7px;border:1px solid var(--site-line);border-radius:8px;background:var(--site-surface);color:var(--site-text);font-weight:750;cursor:pointer}
+.lego-controls button:hover,.lego-controls .lego-grab{border-color:var(--site-accent);color:var(--site-accent)}.lego-controls .lego-grab{cursor:grab;font-size:16px}
+.lego-help{flex:1 1 100%;margin:0 0 4px;color:var(--site-muted);font-size:12px}
+.visibility-panel{border-color:var(--site-line)}.visibility-option{cursor:pointer}.visibility-option input{accent-color:var(--site-accent)}
+.lego-add-music{padding:9px 14px;border:1px dashed var(--site-line);border-radius:12px;background:var(--site-surface);color:var(--site-text);font:inherit;cursor:pointer}
+.socials .social-card.is-editing{width:min(280px,90vw);height:auto;min-height:160px;flex:0 1 280px;overflow:visible;padding:11px;border-color:var(--site-accent);background:var(--site-surface);box-shadow:0 8px 26px color-mix(in srgb,var(--site-accent) 16%,transparent)}
+.social-edit-contact{position:absolute;z-index:3;left:50%;bottom:5px;transform:translateX(-50%);padding:4px 8px;border:1px solid var(--site-accent);border-radius:99px;background:color-mix(in srgb,var(--site-surface) 90%,transparent);color:var(--site-text);font-size:9px;font-weight:750;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;cursor:pointer}
+.direct-edit-mode .social-card:hover .social-edit-contact,.direct-edit-mode .social-card:focus-within .social-edit-contact{opacity:1;pointer-events:auto}
+.creator-shortcuts button{border-color:var(--site-line);background:var(--site-surface);color:var(--site-text)}.creator-shortcuts button:hover{border-color:var(--site-accent);color:var(--site-accent)}
+.creator-shortcuts .creator-main,.direct-edit-mode .creator-shortcuts .creator-main{background:linear-gradient(115deg,var(--site-accent),color-mix(in srgb,var(--site-accent) 72%,var(--site-secondary)));border-color:color-mix(in srgb,var(--site-accent) 65%,white);color:white;box-shadow:0 4px 18px color-mix(in srgb,var(--site-accent) 24%,transparent)}
+.edit-mode-toolbar{background:color-mix(in srgb,var(--site-bg) 92%,var(--site-surface));border-top-color:var(--site-accent);border-bottom-color:var(--site-line)}
+.edit-mode-toolbar .finish-edit{background:linear-gradient(115deg,var(--site-accent),color-mix(in srgb,var(--site-accent) 72%,var(--site-secondary)));border-color:color-mix(in srgb,var(--site-accent) 65%,white);color:white;box-shadow:0 4px 14px color-mix(in srgb,var(--site-accent) 24%,transparent)}
+.edit-toolbar-mark,.edit-mode-toolbar .toolbar-action:hover,.edit-mode-toolbar .toolbar-action.active{border-color:var(--site-accent);background:color-mix(in srgb,var(--site-surface) 76%,var(--site-accent));color:var(--site-text)}
+.edit-mode-toolbar .appearance-range input,.edit-mode-toolbar input[type=range]{accent-color:var(--site-accent)}
+.direct-edit-mode .social-icon-edit,.direct-edit-mode .avatar-image-edit .image-edit-symbol,.direct-edit-mode .avatar-image-edit .image-edit-label{background:var(--site-accent);color:white}
+.direct-edit-mode .social-icon-edit .image-edit-symbol{background:transparent;color:white}
+.direct-edit-mode .inline-profile-field:focus{border-color:var(--site-accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--site-accent) 22%,transparent)}
+@media(max-width:650px){.lego-layout{padding:10px 12px;gap:8px}.lego-block{border-radius:12px}.lego-controls button{min-width:30px;height:29px}.socials .social-card.is-editing{width:min(100%,320px);flex:1 1 100%}}
+.site-header nav .navbutton{background:linear-gradient(115deg,var(--site-accent),color-mix(in srgb,var(--site-accent) 72%,var(--site-secondary)));border-color:color-mix(in srgb,var(--site-accent) 65%,white);color:white;box-shadow:0 4px 18px color-mix(in srgb,var(--site-accent) 24%,transparent)}
+/* Banner fit: keep full art visible and scale overlay text to the card bounds. */
+.art.has-upload{background-size:contain!important;background-repeat:no-repeat!important;background-position:center!important;background-color:var(--site-bg,#09060d)}
+.art{container-type:size}
+.art .arttext{display:grid;justify-items:center;width:100%;max-width:92%;max-height:100%;overflow:hidden;font-size:clamp(12px,min(calc(135cqw / var(--art-max-chars,6)),calc(118cqh / var(--art-line-count,2))),64px);line-height:.9;overflow-wrap:anywhere;text-wrap:balance}
+.art .arttext>span{display:block;max-width:100%;white-space:pre-wrap;overflow-wrap:anywhere}
+.art-reorder-handle{position:absolute;z-index:5;top:8px;left:8px;width:35px;height:35px;border:1px solid var(--site-accent);border-radius:10px;background:color-mix(in srgb,var(--site-surface) 90%,transparent);color:var(--site-text);font-size:20px;cursor:grab}
+.direct-edit-mode .socials .social-card{overflow:visible}
+.social-order-grab{position:absolute;z-index:6;top:3px;left:3px;display:grid;place-items:center;width:25px;height:25px;padding:0;border:1px solid var(--site-accent);border-radius:8px;background:color-mix(in srgb,var(--site-surface) 92%,transparent);color:var(--site-text);font-size:16px;cursor:grab}
+.socials .social-card.is-moving{opacity:.55;outline:2px dashed var(--site-accent);outline-offset:3px}
 
