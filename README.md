@@ -40,6 +40,7 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - O texto do botão de orçamento e a explicação do destino podem ser editados no painel.
 - Modo de edição no próprio site: nome, usuário, especialidade e descrição são editados no lugar; cores, fundo, fonte e galeria ficam numa barra horizontal no topo.
 - A barra de edição começa compacta; opções de aparência aparecem ao abrir esse grupo.
+- No botão de orçamento, o texto explicativo é opcional; sem ele, ficam visíveis apenas o canal e o endereço.
 - Redes abrem os campos de link e nome no próprio cartão; lápis de foto e de arte aparecem no elemento durante a edição.
 - Atalhos separados para música e trabalhos; lápis grande aparece no centro da arte ao passar o mouse em modo de edição.
 - Prévia visual do site como visitante, que oculta os controles de edição durante a apresentação.
