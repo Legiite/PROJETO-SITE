@@ -129,4 +129,14 @@ footer{border-color:var(--site-line);color:var(--site-muted)}footer b{color:var(
 .direct-edit-mode .lego-block{cursor:grab}.direct-edit-mode .lego-block:active{cursor:grabbing}
 .direct-edit-mode .lego-block input,.direct-edit-mode .lego-block textarea,.direct-edit-mode .lego-controls{cursor:auto}
 @media(max-width:700px){.direct-edit-mode .lego-controls{top:2px;right:2px;opacity:.9;pointer-events:auto}.lego-controls button{min-width:27px;width:27px;height:27px}.lego-controls .lego-hide{min-width:27px;width:27px;height:27px}}
+/* Free LEGO canvas: blocks use saved grid positions and snap to 12 columns. */
+.lego-layout{display:grid!important;position:relative;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-rows:auto;grid-auto-flow:row;align-content:start;align-items:start;column-gap:10px;row-gap:16px;min-height:calc(100vh - 80px);max-width:1560px;margin:0 auto;padding:14px 24px}
+.lego-layout>.lego-block{position:relative;width:100%;min-width:0;min-height:0;justify-self:stretch;align-self:start;}
+.lego-layout>.lego-block.lego-avatar,.lego-layout>.lego-block.lego-shortcuts,.lego-layout>.lego-block.lego-socials,.lego-layout>.lego-block.lego-music,.lego-layout>.lego-block.lego-commission,.lego-layout>.lego-block.lego-quote,.lego-layout>.lego-block.lego-quoteDestination,.lego-layout>.lego-block.lego-portfolio,.lego-layout>.lego-block.lego-footer{display:block!important}
+.lego-layout>.lego-block.is-moving{z-index:20;opacity:.65;outline:2px dashed var(--site-accent);outline-offset:3px}
+.lego-controls{max-width:190px;flex-wrap:wrap;background:color-mix(in srgb,var(--site-bg) 94%,var(--site-surface));}
+.lego-controls button{cursor:pointer}
+.lego-controls .lego-label{display:none}
+.lego-layout>.lego-block:hover{z-index:5}
+@media(max-width:700px){.lego-layout{grid-template-columns:repeat(6,minmax(0,1fr));column-gap:8px;row-gap:12px;padding:10px 12px}.lego-layout>.lego-block{grid-column:1/-1!important;grid-row:auto!important}.lego-controls{max-width:205px}}
 
