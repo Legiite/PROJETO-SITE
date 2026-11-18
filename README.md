@@ -28,6 +28,9 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - Botão `+` na galeria para adicionar várias imagens e atalho no editor.
 - Clique no avatar para escolher a foto de perfil.
 - Twitch, Instagram, TikTok, Discord e E-mail mostram ícone, nome do serviço e usuário/endereço embaixo.
+- Modo de edição direto no site: clique nos textos para alterar e nos cartões sociais para editar o link e o nome ali mesmo.
+- O painel Aparência oferece oito paletas combinadas, sincroniza as cores do site e permite ajustes personalizados por função.
+- O painel Seções permite ocultar ou exibir blocos como foto, redes, música, comissões, orçamento, galeria e rodapé.
 - O avatar e os ícones de cada rede podem receber imagem personalizada; o mesmo lápis aparece ao passar o mouse.
 - Imagem ou GIF animado como fundo, com prévia, remoção e limite local de 20 MB.
 - A demonstração já abre com um GIF roxo no fundo e um fantasma animado na categoria Animações; ambos podem ser trocados no editor. Os dois exemplos são carregados do GIPHY.
