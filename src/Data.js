@@ -6,13 +6,22 @@ const Data = {
   handle: 'ghoststudio',
   role: 'Designer gráfico · Artista digital',
   bio: 'Transformando ideias em identidades visuais.',
+  avatar: '',
   commissionText: 'Comissões abertas',
   email: 'oi@ghoststudio.art',
   socials: {
     twitch: 'https://www.twitch.tv/ghoststudio',
     instagram: 'https://www.instagram.com/ghoststudio',
     tiktok: 'https://www.tiktok.com/@ghoststudio',
-    discord: ''
+    discord: '',
+    email: 'oi@ghoststudio.art'
+  },
+  socialNames: {
+    twitch: '@ghoststudio',
+    instagram: '@ghoststudio',
+    tiktok: '@ghoststudio',
+    discord: '@ghoststudio',
+    email: 'oi@ghoststudio.art'
   },
   works: [
     {id:'ghost',title:'Stream Offline — Ghost',category:'Layouts',style:'ghost',text:'STREAM\nOFFLINE',emoji:'👻'},

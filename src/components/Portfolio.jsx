@@ -13,7 +13,7 @@ function Artwork({work,onOpen}) {
   </motion.article>;
 }
 
-export default function Portfolio({works,filter,onFilter,onOpen}) {
+export default function Portfolio({works,filter,onFilter,onOpen,onAdd}) {
   const categories=useMemo(()=>['Todos',...new Set(works.map(work=>work.category||'Trabalhos'))],[works]);
   const visible=filter==='Todos'?works:works.filter(work=>(work.category||'Trabalhos')===filter);
   return <section id="portfolio" className="portfolio-section">
@@ -21,6 +21,8 @@ export default function Portfolio({works,filter,onFilter,onOpen}) {
     <div className="filters" role="tablist" aria-label="Categorias de arte">
       {categories.map(category=><button key={category} className={filter===category?'active':''} role="tab" aria-selected={filter===category} onClick={()=>onFilter(category)}>{category}</button>)}
     </div>
-    <motion.div className="gallery" layout>{visible.map(work=><Artwork key={work.id} work={work} onOpen={onOpen}/>)}</motion.div>
+    <motion.div className="gallery" layout>{visible.map(work=><Artwork key={work.id} work={work} onOpen={onOpen}/>)}
+      <label className="art add-art"><input type="file" accept="image/png,image/jpeg,image/webp,image/gif" multiple onChange={onAdd}/><span className="add-art-icon">＋</span><strong>Adicionar imagens</strong><small>PNG, JPG, WebP ou GIF</small></label>
+    </motion.div>
   </section>;
 }
