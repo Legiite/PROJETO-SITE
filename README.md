@@ -33,6 +33,7 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - A demonstração já abre com um GIF roxo no fundo e um fantasma animado na categoria Animações; ambos podem ser trocados no editor. Os dois exemplos são carregados do GIPHY.
 - Em telas grandes, o perfil e a galeria usam uma escala compacta com quatro artes por fileira para mostrar o portfólio quase todo sem rolagem longa.
 - No celular, fontes e cartões de contato se adaptam à largura, com identificadores maiores e cartões que podem quebrar em duas linhas.
+- Em tablets e janelas estreitas, avatar, títulos, cartões sociais e endereços usam tamanhos ampliados para leitura.
 - A música começa pausada e mutada; o visitante ativa o som pelo botão “Ouvir música”.
 - Editor local para nome, usuário, especialidade, descrição, redes, cores, fonte, número de colunas e cantos dos cartões.
 - Seletor do destino do botão de orçamento (E-mail, Discord, Twitch, Instagram ou TikTok), com o canal e endereço exibidos abaixo do botão.
