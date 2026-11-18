@@ -11,6 +11,16 @@ import { clearMedia, deleteMedia, getMedia, saveMedia } from './mediaStore';
 const PROFILE_KEY='ghostfolio.react.profile', WORKS_KEY='ghostfolio.react.works';
 const DENSITY_KEY='ghostfolio.layout-density-v1';
 const NOTICE_KEY='ghostfolio.optional-quote-notice-v1';
+const PALETTES=[
+  {id:'ghost',name:'Fantasma',background:'#0b0710',surface:'#180e23',accent:'#bd4cff',secondary:'#c7ff5e',text:'#f8f3fa'},
+  {id:'ocean',name:'Oceano',background:'#071119',surface:'#102331',accent:'#39c7d9',secondary:'#a5f3d0',text:'#f0fbff'},
+  {id:'sunset',name:'Pôr do sol',background:'#160c12',surface:'#28131b',accent:'#ff6b6b',secondary:'#ffc857',text:'#fff4ed'},
+  {id:'lavender',name:'Lavanda',background:'#100d1c',surface:'#211a32',accent:'#b69cff',secondary:'#f09ad8',text:'#fbf7ff'},
+  {id:'forest',name:'Floresta',background:'#09130f',surface:'#13251c',accent:'#6ee7a0',secondary:'#d1fa77',text:'#f1fff5'},
+  {id:'berry',name:'Amora',background:'#160a18',surface:'#28122d',accent:'#ee6bd6',secondary:'#f5a6a6',text:'#fff5ff'},
+  {id:'midnight',name:'Meia-noite',background:'#090d1c',surface:'#151d33',accent:'#7aa2ff',secondary:'#8be9fd',text:'#f2f6ff'},
+  {id:'sand',name:'Areia',background:'#17120d',surface:'#292116',accent:'#e6aa62',secondary:'#f0d18a',text:'#fff8e9'}
+];
 function readJson(key,fallback){try{return JSON.parse(localStorage.getItem(key))||fallback}catch{return fallback}}
 function normalizeWork(work){return {...work,category:work.category||work.cat||'Trabalhos',text:(work.text||'').replace(/<br\s*\/?\s*>/gi,'\n'),kind:work.kind||'image'}}
 function fileUrl(file){return URL.createObjectURL(file)}
@@ -30,10 +40,10 @@ export default function App(){
     for(const key of ['name','handle','role','bio']){const legacy=localStorage.getItem(`ghostfolio.in${key[0].toUpperCase()}${key.slice(1)}`);if(!migrated[key]&&legacy)migrated[key]=legacy}
     if(!localStorage.getItem(DENSITY_KEY)){if(migrated.design?.columns===3)migrated.design={...migrated.design,columns:4};localStorage.setItem(DENSITY_KEY,'1')}
     if(!localStorage.getItem(NOTICE_KEY)){if(migrated.quoteNotice==='Abre')migrated.quoteNotice='';localStorage.setItem(NOTICE_KEY,'1')}
-    return {...Data,...migrated,socials:{...Data.socials,...(migrated.socials||{})},socialNames:{...Data.socialNames,...(migrated.socialNames||{})},socialIcons:{...(migrated.socialIcons||{})},design:{...Data.design,...(migrated.design||{})}};
+    return {...Data,...migrated,socials:{...Data.socials,...(migrated.socials||{})},socialNames:{...Data.socialNames,...(migrated.socialNames||{})},socialIcons:{...(migrated.socialIcons||{})},sections:{...Data.sections,...(migrated.sections||{})},design:{...Data.design,...(migrated.design||{})}};
   });
   const [works,setWorks]=useState(loadWorks);
-  const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(false),[editorSection,setEditorSection]=useState('music'),[editMode,setEditMode]=useState(false),[appearanceOpen,setAppearanceOpen]=useState(false),[editingSocial,setEditingSocial]=useState(''),[previewMode,setPreviewMode]=useState(false),[selected,setSelected]=useState(null),[editingWork,setEditingWork]=useState(false),[musicPlaying,setMusicPlaying]=useState(false);
+  const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(false),[editorSection,setEditorSection]=useState('music'),[editMode,setEditMode]=useState(false),[appearanceOpen,setAppearanceOpen]=useState(false),[sectionsOpen,setSectionsOpen]=useState(false),[editingSocial,setEditingSocial]=useState(''),[previewMode,setPreviewMode]=useState(false),[selected,setSelected]=useState(null),[editingWork,setEditingWork]=useState(false),[musicPlaying,setMusicPlaying]=useState(false);
   const audioRef=useRef(null);
 
   useEffect(()=>{
@@ -64,7 +74,7 @@ export default function App(){
   },[]);
   useEffect(()=>{
     const design=profile.design||Data.design,root=document.documentElement;
-    root.style.setProperty('--site-bg',design.background);root.style.setProperty('--site-surface',design.surface);root.style.setProperty('--site-accent',design.accent);root.style.setProperty('--site-text',design.text);
+    root.style.setProperty('--site-bg',design.background);root.style.setProperty('--site-surface',design.surface);root.style.setProperty('--site-accent',design.accent);root.style.setProperty('--site-secondary',design.secondary||'#b9ff4a');root.style.setProperty('--site-text',design.text);
     root.style.setProperty('--site-font',design.font==='serif'?'Georgia,serif':design.font==='mono'?'ui-monospace,monospace':'Inter,system-ui,sans-serif');
     root.style.setProperty('--gallery-columns',String(design.columns));root.style.setProperty('--card-radius',`${design.radius}px`);
   },[profile.design]);
@@ -158,59 +168,71 @@ export default function App(){
     else{audioRef.current.pause();audioRef.current.muted=true;setMusicPlaying(false)}
   }
   const design=profile.design||Data.design;
+  const sections=profile.sections||Data.sections;
+  function choosePalette(palette){setProfile(current=>({...current,design:{...current.design,background:palette.background,surface:palette.surface,accent:palette.accent,secondary:palette.secondary,text:palette.text,palette:palette.id}}))}
+  function updateDesign(key,value){setProfile(current=>({...current,design:{...current.design,[key]:value,palette:'custom'}}))}
   function openEditor(section='music'){setEditMode(false);setEditorSection(section);setEditorOpen(true)}
-  function toggleEditMode(){setEditorOpen(false);setEditingSocial('');setAppearanceOpen(false);setEditMode(current=>!current)}
+  function toggleEditMode(){setEditorOpen(false);setEditingSocial('');setAppearanceOpen(false);setSectionsOpen(false);setEditMode(current=>!current)}
   function updateSocial(key,field,value){setProfile(current=>field==='name'?({...current,socialNames:{...current.socialNames,[key]:value}}):({...current,socials:{...current.socials,[key]:value}}))}
+  function toggleSection(key){setProfile(current=>({...current,sections:{...current.sections,[key]:!current.sections[key]}}))}
   const backgroundImage=profile.backgroundUrl||profile.backgroundRemoteUrl;
-  const designStyle={'--site-bg':design.background,'--site-surface':design.surface,'--site-accent':design.accent,'--site-text':design.text,'--site-font':design.font==='serif'?'Georgia,serif':design.font==='mono'?'ui-monospace,monospace':'Inter,system-ui,sans-serif','--gallery-columns':String(design.columns),'--card-radius':`${design.radius}px`,...(backgroundImage?{backgroundImage:`linear-gradient(#0b071080,#0b071080),url("${backgroundImage}")`,backgroundSize:'cover',backgroundPosition:'center',backgroundAttachment:'fixed'}:{})};
+  const designStyle={'--site-bg':design.background,'--site-surface':design.surface,'--site-accent':design.accent,'--site-secondary':design.secondary||'#b9ff4a','--site-text':design.text,'--site-font':design.font==='serif'?'Georgia,serif':design.font==='mono'?'ui-monospace,monospace':'Inter,system-ui,sans-serif','--gallery-columns':String(design.columns),'--card-radius':`${design.radius}px`,...(backgroundImage?{backgroundImage:`linear-gradient(#0b071080,#0b071080),url("${backgroundImage}")`,backgroundSize:'cover',backgroundPosition:'center',backgroundAttachment:'fixed'}:{})};
 
   return <div className={`App${previewMode?' preview-mode':''}${editMode?' direct-edit-mode':''}`} style={designStyle}>
-    <Header onEdit={toggleEditMode} editMode={editMode} brand={Data.HeaderTitle}/>
+    <Header onEdit={toggleEditMode} editMode={editMode} sections={sections} brand={Data.HeaderTitle}/>
     {editMode&&<div className="edit-mode-toolbar" role="toolbar" aria-label="Opções de edição do site">
       <div className="edit-toolbar-main">
         <div className="edit-toolbar-heading"><span className="edit-toolbar-mark">✎</span><div><strong>Seu site</strong><span>Edite os textos clicando neles.</span></div></div>
         <div className="edit-toolbar-actions">
-          <button className={`toolbar-action ${appearanceOpen?'active':''}`} onClick={()=>setAppearanceOpen(open=>!open)} aria-expanded={appearanceOpen}>🎨 <span>Aparência</span><i>{appearanceOpen?'−':'+'}</i></button>
+          <button className={`toolbar-action ${appearanceOpen?'active':''}`} onClick={()=>{setAppearanceOpen(open=>!open);setSectionsOpen(false)}} aria-expanded={appearanceOpen}>🎨 <span>Aparência</span><i>{appearanceOpen?'−':'+'}</i></button>
+          <button className={`toolbar-action ${sectionsOpen?'active':''}`} onClick={()=>{setSectionsOpen(open=>!open);setAppearanceOpen(false)}} aria-expanded={sectionsOpen}>▤ <span>Seções</span><i>{sectionsOpen?'−':'+'}</i></button>
           <label className="toolbar-action upload-background">▧ <span>Fundo / GIF</span><input type="file" accept="image/*" onChange={setBackground}/></label>
           {backgroundImage&&<button type="button" className="clear-site-background" onClick={clearBackground} aria-label="Remover fundo">×</button>}
           <button className="finish-edit" onClick={toggleEditMode}>Concluir</button>
         </div>
       </div>
       {appearanceOpen&&<div className="appearance-panel">
+        <div className="palette-picker" aria-label="Paletas de cores">
+          <div className="palette-picker-heading"><strong>Paleta do site</strong><span>As cores combinam em todos os blocos</span></div>
+          <div className="palette-options">{PALETTES.map(palette=><button type="button" key={palette.id} className={`palette-option${design.palette===palette.id?' selected':''}`} onClick={()=>choosePalette(palette)} aria-label={`Usar paleta ${palette.name}`} aria-pressed={design.palette===palette.id} title={palette.name}><i style={{'--swatch-bg':palette.background,'--swatch-surface':palette.surface,'--swatch-accent':palette.accent,'--swatch-secondary':palette.secondary}}/><span>{palette.name}</span></button>)}
+            <button type="button" className={`palette-option palette-custom${design.palette==='custom'?' selected':''}`} onClick={()=>updateDesign('palette','custom')} aria-pressed={design.palette==='custom'} title="Personalizada"><i/><span>Minha paleta</span></button>
+          </div>
+        </div>
         <div className="appearance-colors">
-          <label><span>Fundo</span><input type="color" value={design.background} onChange={event=>setProfile(current=>({...current,design:{...current.design,background:event.target.value}}))}/></label>
-          <label><span>Cartões</span><input type="color" value={design.surface} onChange={event=>setProfile(current=>({...current,design:{...current.design,surface:event.target.value}}))}/></label>
-          <label><span>Destaque</span><input type="color" value={design.accent} onChange={event=>setProfile(current=>({...current,design:{...current.design,accent:event.target.value}}))}/></label>
-          <label><span>Texto</span><input type="color" value={design.text} onChange={event=>setProfile(current=>({...current,design:{...current.design,text:event.target.value}}))}/></label>
+          <label><span>Fundo</span><input type="color" value={design.background} onChange={event=>updateDesign('background',event.target.value)}/></label>
+          <label><span>Cartões</span><input type="color" value={design.surface} onChange={event=>updateDesign('surface',event.target.value)}/></label>
+          <label><span>Destaque</span><input type="color" value={design.accent} onChange={event=>updateDesign('accent',event.target.value)}/></label>
+          <label><span>Cor secundária</span><input type="color" value={design.secondary||'#b9ff4a'} onChange={event=>updateDesign('secondary',event.target.value)}/></label>
+          <label><span>Texto</span><input type="color" value={design.text} onChange={event=>updateDesign('text',event.target.value)}/></label>
         </div>
         <label className="appearance-select">Fonte<select value={design.font} onChange={event=>setProfile(current=>({...current,design:{...current.design,font:event.target.value}}))}><option value="system">Legível</option><option value="serif">Clássica</option><option value="mono">Monoespaçada</option></select></label>
         <label className="appearance-select">Galeria<select value={design.columns} onChange={event=>setProfile(current=>({...current,design:{...current.design,columns:Number(event.target.value)}}))}><option value="2">2 colunas</option><option value="3">3 colunas</option><option value="4">4 colunas</option></select></label>
         <label className="appearance-range">Cantos<input type="range" min="0" max="40" value={design.radius} onChange={event=>setProfile(current=>({...current,design:{...current.design,radius:Number(event.target.value)}}))}/></label>
       </div>}
+      {sectionsOpen&&<div className="appearance-panel visibility-panel" aria-label="Seções que aparecem no site">{[['avatar','Foto de perfil'],['socials','Redes sociais'],['music','Música'],['commission','Comissões'],['quote','Solicitar orçamento'],['portfolio','Galeria de trabalhos'],['footer','Rodapé']].map(([key,label])=><label key={key} className="visibility-option"><input type="checkbox" checked={Boolean(sections[key])} onChange={()=>toggleSection(key)}/><span>{label}</span></label>)}</div>}
     </div>}
     <main>
       <section className="hero" id="profile">
-        <div className="avatar" aria-label="Foto de perfil">
+        {sections.avatar&&<div className="avatar" aria-label="Foto de perfil">
           {profile.avatarUrl||profile.avatar?<img src={profile.avatarUrl||profile.avatar} alt="Foto de perfil"/>:<span className="avatar-placeholder">👻<i>♫</i></span>}
           {editMode&&<ImageEditControl className="avatar-image-edit" label="Trocar foto do perfil" onChange={setAvatar}/>}
-        </div>
+        </div>}
         <h1>{editMode?<input className="inline-profile-field inline-name" aria-label="Nome artístico" value={profile.name} onChange={event=>setProfile(current=>({...current,name:event.target.value}))}/>:profile.name}</h1>
         {editMode?<input className="inline-profile-field inline-handle" aria-label="Usuário" value={`@${(profile.handle||'').replace(/^@/,'')}`} onChange={event=>setProfile(current=>({...current,handle:event.target.value.replace(/^@/, '')}))}/>:<a className="handle">@{(profile.handle||'').replace(/^@/,'')}</a>}
         {editMode?<><input className="inline-profile-field inline-role" aria-label="Especialidade" value={profile.role} onChange={event=>setProfile(current=>({...current,role:event.target.value}))}/><textarea className="inline-profile-field inline-bio" aria-label="Descrição" value={profile.bio} onChange={event=>setProfile(current=>({...current,bio:event.target.value}))}/></>:<><p className="role">{profile.role}</p><p className="bio">{profile.bio}</p></>}
         <div className="creator-shortcuts" aria-label="Atalhos de edição"><button className="creator-main" onClick={toggleEditMode}>{editMode?'✓　Concluir edição':'✎　Editar no próprio site'}</button><button onClick={()=>openEditor('music')}>♫　Música</button><button onClick={()=>openEditor('works')}>🖼️　Trabalhos</button></div>
-        <SocialLinks socials={profile.socials} socialNames={profile.socialNames} socialIcons={profile.socialIcons} onIconChange={setSocialIcon} editMode={editMode} onEditSocial={setEditingSocial}/>
-        {editMode&&editingSocial&&<div className="inline-social-editor"><strong>Editar {editingSocial==='email'?'E-mail':editingSocial[0].toUpperCase()+editingSocial.slice(1)}</strong><label>Link ou endereço<input value={profile.socials[editingSocial]} onChange={event=>updateSocial(editingSocial,'link',event.target.value)}/></label><label>Nome visível<input value={profile.socialNames[editingSocial]} onChange={event=>updateSocial(editingSocial,'name',event.target.value)}/></label><button onClick={()=>setEditingSocial('')}>Pronto</button></div>}
-        {profile.musicUrl&&<div className="music-player">
+        {sections.socials&&<SocialLinks socials={profile.socials} socialNames={profile.socialNames} socialIcons={profile.socialIcons} onIconChange={setSocialIcon} editMode={editMode} editingSocial={editingSocial} onEditSocial={setEditingSocial} onSocialChange={updateSocial}/>}
+        {sections.music&&profile.musicUrl&&<div className="music-player">
           <audio ref={audioRef} src={profile.musicUrl} loop preload="none" muted onEnded={()=>setMusicPlaying(false)}/>
           <button onClick={toggleMusic} aria-label={musicPlaying?'Pausar música':'Tocar música'}>{musicPlaying?'Ⅱ':'▶'} <span>{musicPlaying?'Pausar música':'Ouvir música'}</span></button>
           <span className="music-title">♫ {profile.musicName}</span>
         </div>}
-        <p className="open"><i/> {profile.commissionText}</p>
-        {(()=>{const channel=profile.quoteChannel||'email',destination=profile.socials[channel]||'',label=channel==='email'?profile.socialNames.email||destination:profile.socialNames[channel]||destination;const href=channel==='email'?(destination?`mailto:${destination.replace(/^mailto:/,'')}?subject=Or%C3%A7amento%20Ghostfolio`:undefined):destination||undefined;const names={email:'e-mail',discord:'Discord',twitch:'Twitch',instagram:'Instagram',tiktok:'TikTok'};return editMode?<><div className="quote quote-inline-edit"><span>✎</span><input aria-label="Texto do botão" value={profile.quoteButtonText||'Solicitar orçamento'} onChange={event=>setProfile(current=>({...current,quoteButtonText:event.target.value}))}/></div><div className="quote-destination quote-inline-destination"><span className="quote-destination-icon">↗</span><input aria-label="Texto opcional antes do destino" placeholder="Texto opcional" value={profile.quoteNotice||''} onChange={event=>setProfile(current=>({...current,quoteNotice:event.target.value}))}/><select aria-label="Destino do orçamento" value={channel} onChange={event=>setProfile(current=>({...current,quoteChannel:event.target.value}))}>{Object.entries(names).map(([key,name])=><option key={key} value={key}>{name}</option>)}</select><b>{label}</b></div></>:<><a className={`quote ${destination?'':'disabled'}`} href={href} target={channel==='email'?undefined:'_blank'} rel={channel==='email'?undefined:'noreferrer'}>✎　{profile.quoteButtonText||'Solicitar orçamento'}</a>{destination&&( <div className="quote-destination"><span className="quote-destination-icon">↗</span><span>{profile.quoteNotice?.trim()&&<strong>{profile.quoteNotice.trim()}</strong>}<b>{names[channel]}: {label}</b></span></div>)}</>})()}
+        {sections.commission&&<p className="open"><i/> {profile.commissionText}</p>}
+        {sections.quote&&(()=>{const channel=profile.quoteChannel||'email',destination=profile.socials[channel]||'',label=channel==='email'?profile.socialNames.email||destination:profile.socialNames[channel]||destination;const href=channel==='email'?(destination?`mailto:${destination.replace(/^mailto:/,'')}?subject=Or%C3%A7amento%20Ghostfolio`:undefined):destination||undefined;const names={email:'e-mail',discord:'Discord',twitch:'Twitch',instagram:'Instagram',tiktok:'TikTok'};return editMode?<><div className="quote quote-inline-edit"><span>✎</span><input aria-label="Texto do botão" value={profile.quoteButtonText||'Solicitar orçamento'} onChange={event=>setProfile(current=>({...current,quoteButtonText:event.target.value}))}/></div><div className="quote-destination quote-inline-destination"><span className="quote-destination-icon">↗</span><input aria-label="Texto opcional antes do destino" placeholder="Texto opcional" value={profile.quoteNotice||''} onChange={event=>setProfile(current=>({...current,quoteNotice:event.target.value}))}/><select aria-label="Destino do orçamento" value={channel} onChange={event=>setProfile(current=>({...current,quoteChannel:event.target.value}))}>{Object.entries(names).map(([key,name])=><option key={key} value={key}>{name}</option>)}</select><b>{label}</b></div></>:<><a className={`quote ${destination?'':'disabled'}`} href={href} target={channel==='email'?undefined:'_blank'} rel={channel==='email'?undefined:'noreferrer'}>✎　{profile.quoteButtonText||'Solicitar orçamento'}</a>{destination&&( <div className="quote-destination"><span className="quote-destination-icon">↗</span><span>{profile.quoteNotice?.trim()&&<strong>{profile.quoteNotice.trim()}</strong>}<b>{names[channel]}: {label}</b></span></div>)}</>})()}
       </section>
-      <Portfolio works={works} filter={filter} onFilter={setFilter} onOpen={(work,edit=false)=>{setSelected(work);setEditingWork(edit)}} onAdd={addFiles} editable={editMode}/>
+      {sections.portfolio&&<Portfolio works={works} filter={filter} onFilter={setFilter} onOpen={(work,edit=false)=>{setSelected(work);setEditingWork(edit)}} onAdd={addFiles} editable={editMode}/>}
     </main>
-    <footer>© 2026 {profile.name} · <b>{Data.FooterText}</b></footer>
+    {sections.footer&&<footer>© 2026 {profile.name} · <b>{Data.FooterText}</b></footer>}
     {previewMode&&<button className="preview-return" onClick={()=>{setPreviewMode(false);setEditMode(true)}}>✎ Voltar ao editor</button>}
     <AnimatePresence>{selected&&<motion.div className="modal show" role="dialog" aria-modal="true" aria-label={selected.title} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={event=>event.target===event.currentTarget&&setSelected(null)}>
       <button className="close" aria-label="Fechar" onClick={()=>setSelected(null)}>×</button>
