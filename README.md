@@ -24,7 +24,7 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 ## Funcionalidades da demonstração
 
 - Página Ghost Studio adaptada à estrutura de perfil e galeria do template de referência.
-- Galeria com categorias, animações de entrada e visualização ampliada de artes; clique em uma arte para trocar a imagem, editar título/categoria ou excluir.
+- Galeria com categorias, artes que sobem suavemente ao aparecer e flutuam levemente ao passar o mouse, GIFs animados e visualização ampliada; clique numa arte para editar título/categoria, trocar a mídia ou excluir.
 - Botão `+` na galeria para adicionar várias imagens e atalho no editor.
 - Clique no avatar para escolher a foto de perfil.
 - Twitch, Instagram, TikTok, Discord e E-mail mostram ícone, nome do serviço e usuário/endereço embaixo.
