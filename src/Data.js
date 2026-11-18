@@ -9,6 +9,8 @@ const Data = {
   avatar: '',
   avatarMediaId: '',
   avatarUrl: '',
+  backgroundMediaId: '',
+  backgroundUrl: '',
   commissionText: 'Comissões abertas',
   quoteChannel: 'email',
   email: 'oi@ghoststudio.art',
@@ -26,6 +28,7 @@ const Data = {
     discord: '@ghoststudio',
     email: 'oi@ghoststudio.art'
   },
+  socialIcons: {},
   design: {
     background: '#0b0710',
     surface: '#150d1e',
