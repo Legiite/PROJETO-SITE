@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## 0.6.5 — 2026-11-18
-- Tornados reordenáveis individualmente os textos do perfil, os atalhos, os cartões sociais e as artes da galeria.
+- Tornados reordenáveis individualmente o cabeçalho, textos, atalhos, cartões sociais e artes da galeria.
 - Adicionadas alças para arrastar peças e mover os cartões sociais e banners sem abrir o editor de imagens.
 - Ajustado o texto dos banners para caber no cartão e exibidas imagens enviadas sem cortar as bordas.
 - Sincronizada a cor do botão “Editar no próprio site” com a paleta ativa.
