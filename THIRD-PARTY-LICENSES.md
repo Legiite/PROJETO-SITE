@@ -29,3 +29,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## GIFs de demonstração
+
+As duas animações de exemplo são carregadas da CDN do GIPHY: [Glow Rings](https://giphy.com/explore/glow-rings) (fundo) e [Ghost Stickers](https://giphy.com/explore/ghost-stickers) (galeria). São exemplos visuais que podem ser substituídos ou removidos pelo editor. Para uso comercial, substitua-os por animações próprias ou com licença adequada.
+
