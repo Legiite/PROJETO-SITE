@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 0.6.5 — 2026-11-18
+- Tornados reordenáveis individualmente os textos do perfil, os atalhos, os cartões sociais e as artes da galeria.
+- Adicionadas alças para arrastar peças e mover os cartões sociais e banners sem abrir o editor de imagens.
+- Ajustado o texto dos banners para caber no cartão e exibidas imagens enviadas sem cortar as bordas.
+- Sincronizada a cor do botão “Editar no próprio site” com a paleta ativa.
+
+## 0.6.4 — 2026-11-18
+- Transformados os blocos principais em peças que podem ser mostradas, ocultadas e reordenadas por arraste ou setas.
+- Deixada oculta por padrão a linha opcional com o destino do orçamento.
+- Separados os controles dos cartões sociais: o cartão edita link e nome; o lápis troca apenas o ícone.
+- Sincronizadas as cores dos botões de edição com a paleta escolhida.
+
 ## 0.6.3 — 2026-11-18
 - Adicionadas oito paletas coerentes de cores, com prévia e ajuste individual de cada função visual.
 - As cores escolhidas sincronizam fundo, cartões, textos, links, destaques, botões, bordas e controles.
