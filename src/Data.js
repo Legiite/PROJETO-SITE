@@ -17,7 +17,6 @@ const Data = {
   quoteButtonText: 'Solicitar orçamento',
   quoteNotice: '',
   layoutOrder: ['header','avatar','name','handle','role','bio','editButton','musicShortcut','worksShortcut','socials','music','commission','quote','quoteDestination','portfolio','footer'],
-  socialOrder: ['twitch','instagram','tiktok','discord','email'],
   email: 'oi@ghoststudio.art',
   socials: {
     twitch: 'https://www.twitch.tv/ghoststudio',
