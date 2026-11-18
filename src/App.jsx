@@ -24,6 +24,7 @@ const PALETTES=[
 const blockLabels={header:'Cabeçalho',avatar:'Foto de perfil',name:'Nome',handle:'Usuário',role:'Profissão',bio:'Descrição',editButton:'Botão de edição',musicShortcut:'Atalho de música',worksShortcut:'Atalho de trabalhos',socials:'Redes sociais',music:'Música',commission:'Comissões',quote:'Solicitar orçamento',quoteDestination:'Destino do orçamento',portfolio:'Galeria',footer:'Rodapé'};
 function readJson(key,fallback){try{return JSON.parse(localStorage.getItem(key))||fallback}catch{return fallback}}
 function normalizeLayoutOrder(order){const saved=Array.isArray(order)?order.filter(key=>Data.layoutOrder.includes(key)):[];return [...Data.layoutOrder.filter(key=>!saved.includes(key)),...saved]}
+function normalizeLayoutPositions(saved={}){return Object.fromEntries(Data.layoutOrder.map(key=>{const value=saved?.[key]||Data.layoutPositions[key],span=Math.max(1,Math.min(12,Math.round(Number(value?.span)||Data.layoutPositions[key].span)));return [key,{column:Math.max(0,Math.min(12-span,Math.round(Number(value?.column)||0))),row:Math.max(0,Math.round(Number(value?.row)||0)),span}]}))}
 function normalizeWork(work){return {...work,category:work.category||work.cat||'Trabalhos',text:(work.text||'').replace(/<br\s*\/?\s*>/gi,'\n'),kind:work.kind||'image'}}
 function fileUrl(file){return URL.createObjectURL(file)}
 function loadWorks(){
@@ -42,11 +43,11 @@ export default function App(){
     for(const key of ['name','handle','role','bio']){const legacy=localStorage.getItem(`ghostfolio.in${key[0].toUpperCase()}${key.slice(1)}`);if(!migrated[key]&&legacy)migrated[key]=legacy}
     if(!localStorage.getItem(DENSITY_KEY)){if(migrated.design?.columns===3)migrated.design={...migrated.design,columns:4};localStorage.setItem(DENSITY_KEY,'1')}
     if(!localStorage.getItem(NOTICE_KEY)){if(migrated.quoteNotice==='Abre')migrated.quoteNotice='';localStorage.setItem(NOTICE_KEY,'1')}
-    return {...Data,...migrated,layoutOrder:normalizeLayoutOrder(migrated.layoutOrder),socials:{...Data.socials,...(migrated.socials||{})},socialNames:{...Data.socialNames,...(migrated.socialNames||{})},socialIcons:{...(migrated.socialIcons||{})},sections:{...Data.sections,...(migrated.sections||{})},design:{...Data.design,...(migrated.design||{})}};
+    return {...Data,...migrated,layoutOrder:normalizeLayoutOrder(migrated.layoutOrder),layoutPositions:normalizeLayoutPositions(migrated.layoutPositions),socials:{...Data.socials,...(migrated.socials||{})},socialNames:{...Data.socialNames,...(migrated.socialNames||{})},socialIcons:{...(migrated.socialIcons||{})},sections:{...Data.sections,...(migrated.sections||{})},design:{...Data.design,...(migrated.design||{})}};
   });
   const [works,setWorks]=useState(loadWorks);
 const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(false),[editorSection,setEditorSection]=useState('music'),[editMode,setEditMode]=useState(false),[appearanceOpen,setAppearanceOpen]=useState(false),[sectionsOpen,setSectionsOpen]=useState(false),[editingSocial,setEditingSocial]=useState(''),[previewMode,setPreviewMode]=useState(false),[selected,setSelected]=useState(null),[editingWork,setEditingWork]=useState(false),[musicPlaying,setMusicPlaying]=useState(false),[draggingBlock,setDraggingBlock]=useState('');
-  const audioRef=useRef(null),suppressBlockClick=useRef(false);
+  const audioRef=useRef(null),suppressBlockClick=useRef(false),layoutRef=useRef(null);
 
   useEffect(()=>{
     document.title=profile.name?`Ghostfolio — ${profile.name}`:Data.WebsiteTitle;
@@ -172,14 +173,37 @@ const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(f
   const design=profile.design||Data.design;
   const sections=profile.sections||Data.sections;
   const layoutOrder=Array.isArray(profile.layoutOrder)&&profile.layoutOrder.length?profile.layoutOrder:Data.layoutOrder;
+  const layoutPositions=profile.layoutPositions||Data.layoutPositions;
   function choosePalette(palette){setProfile(current=>({...current,design:{...current.design,background:palette.background,surface:palette.surface,accent:palette.accent,secondary:palette.secondary,text:palette.text,palette:palette.id}}))}
   function updateDesign(key,value){setProfile(current=>({...current,design:{...current.design,[key]:value,palette:'custom'}}))}
   function openEditor(section='music'){setEditMode(false);setEditorSection(section);setEditorOpen(true)}
   function toggleEditMode(){setEditorOpen(false);setEditingSocial('');setAppearanceOpen(false);setSectionsOpen(false);setEditMode(current=>!current)}
   function updateSocial(key,field,value){setProfile(current=>field==='name'?({...current,socialNames:{...current.socialNames,[key]:value}}):({...current,socials:{...current.socials,[key]:value}}))}
   function toggleSection(key){setProfile(current=>({...current,sections:{...current.sections,[key]:!current.sections[key]}}))}
-  function moveBlock(key,delta){setProfile(current=>{const order=[...(current.layoutOrder||Data.layoutOrder)],from=order.indexOf(key),to=from+delta;if(from<0||to<0||to>=order.length)return current;[order[from],order[to]]=[order[to],order[from]];return {...current,layoutOrder:order}})}
-  function dropBlock(target){if(!draggingBlock||draggingBlock===target)return;setProfile(current=>{const order=[...(current.layoutOrder||Data.layoutOrder)],from=order.indexOf(draggingBlock),to=order.indexOf(target);if(from<0||to<0)return current;order.splice(from,1);order.splice(to,0,draggingBlock);return {...current,layoutOrder:order}});setDraggingBlock('')}
+  function findFreePosition(key,column,row,span,positions=profile.layoutPositions||Data.layoutPositions){
+    const width=Math.max(1,Math.min(12,span)),start=Math.max(0,Math.min(12-width,column)),maxRow=Math.max(row,...Object.values(positions).map(position=>position.row))+40;
+    for(let nextRow=Math.max(0,row);nextRow<=maxRow;nextRow++){
+      const candidates=Array.from({length:13-width},(_,index)=>index).sort((a,b)=>Math.abs(a-start)-Math.abs(b-start));
+      for(const nextColumn of candidates){const collision=Object.entries(positions).some(([other,position])=>other!==key&&sections[other]!==false&&position.row===nextRow&&nextColumn<position.column+position.span&&nextColumn+width>position.column);if(!collision)return {column:nextColumn,row:nextRow,span:width}}
+    }
+    return {column:start,row:maxRow+1,span:width};
+  }
+  function setBlockPosition(key,position){setProfile(current=>({...current,layoutPositions:{...current.layoutPositions,[key]:position}}))}
+  function nudgeBlock(key,dx,dy){const current=layoutPositions[key]||Data.layoutPositions[key],position=findFreePosition(key,current.column+dx,current.row+dy,current.span);setBlockPosition(key,position)}
+  function resizeBlock(key,delta){const current=layoutPositions[key]||Data.layoutPositions[key],span=Math.max(2,Math.min(12,current.span+delta)),column=Math.max(0,Math.min(12-span,current.column-Math.floor((span-current.span)/2)));setBlockPosition(key,findFreePosition(key,column,current.row,span))}
+  function placeBlock(event,targetKey=''){
+    event.preventDefault();event.stopPropagation();if(!draggingBlock)return;
+    const stage=layoutRef.current;if(!stage)return;
+    const rect=stage.getBoundingClientRect(),position=layoutPositions[draggingBlock]||Data.layoutPositions[draggingBlock],columnWidth=rect.width/12,span=position.span;
+    const column=Math.max(0,Math.min(12-span,Math.floor((event.clientX-rect.left)/columnWidth-span/2)));
+    const blocks=Array.from(stage.querySelectorAll('[data-layout-key]')).map(element=>({key:element.dataset.layoutKey,row:Number(element.dataset.layoutRow),top:element.getBoundingClientRect().top,bottom:element.getBoundingClientRect().bottom}));
+    let row;
+    if(targetKey)row=layoutPositions[targetKey]?.row??0;
+    else if(blocks.length&&event.clientY>Math.max(...blocks.map(block=>block.bottom)))row=Math.max(...blocks.map(block=>block.row))+1;
+    else row=blocks.length?blocks.reduce((nearest,block)=>Math.abs(block.top-event.clientY)<Math.abs(nearest.top-event.clientY)?block:nearest,blocks[0]).row:0;
+    setBlockPosition(draggingBlock,findFreePosition(draggingBlock,column,row,span));setDraggingBlock('');
+  }
+  function resetLayout(){setProfile(current=>({...current,layoutPositions:{...Data.layoutPositions}}))}
   function renderBlock(key){
     let content=null;
     if(key==='header')content=<Header onEdit={toggleEditMode} editMode={editMode} sections={sections} brand={Data.HeaderTitle}/>;
@@ -202,7 +226,8 @@ const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(f
     if(key==='portfolio')content=<Portfolio works={works} filter={filter} onFilter={setFilter} onOpen={(work,edit=false)=>{setSelected(work);setEditingWork(edit)}} onAdd={addFiles}/>;
     if(key==='footer')content=<footer>© 2026 {profile.name} · <b>{Data.FooterText}</b></footer>;
     if(!sections[key]||!content)return null;
-    return <div key={key} className={`lego-block lego-${key}${draggingBlock===key?' is-moving':''}`} draggable={editMode} onDragStart={event=>{if(event.target.closest('input,textarea,select')){event.preventDefault();return}suppressBlockClick.current=true;event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',key);setDraggingBlock(key)}} onDragEnd={()=>{setDraggingBlock('');setTimeout(()=>{suppressBlockClick.current=false},250)}} onClickCapture={event=>{if(suppressBlockClick.current){event.preventDefault();event.stopPropagation()}}} onDragOver={event=>{if(editMode){event.preventDefault();event.dataTransfer.dropEffect='move'}}} onDrop={event=>{event.preventDefault();dropBlock(key)}}>{editMode&&<div className="lego-controls"><span className="lego-label">Bloco: {blockLabels[key]}</span><button type="button" title="Mover para cima" aria-label={`Mover ${blockLabels[key]} para cima`} onClick={()=>moveBlock(key,-1)}>↑</button><button type="button" title="Mover para baixo" aria-label={`Mover ${blockLabels[key]} para baixo`} onClick={()=>moveBlock(key,1)}>↓</button><button type="button" className="lego-hide" title="Ocultar bloco" aria-label={`Ocultar ${blockLabels[key]}`} onClick={event=>{event.stopPropagation();toggleSection(key)}}>× <span>Ocultar</span></button></div>}{content}</div>;
+    const position=layoutPositions[key]||Data.layoutPositions[key];
+    return <div key={key} data-layout-key={key} data-layout-row={position.row} className={`lego-block lego-${key}${draggingBlock===key?' is-moving':''}`} style={{gridColumn:`${position.column+1} / span ${position.span}`,gridRow:position.row+1}} draggable={editMode} onDragStart={event=>{if(event.target.closest('input,textarea,select')){event.preventDefault();return}suppressBlockClick.current=true;event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',key);setDraggingBlock(key)}} onDragEnd={()=>{setDraggingBlock('');setTimeout(()=>{suppressBlockClick.current=false},250)}} onClickCapture={event=>{if(suppressBlockClick.current){event.preventDefault();event.stopPropagation()}}} onDragOver={event=>{if(editMode){event.preventDefault();event.dataTransfer.dropEffect='move'}}} onDrop={event=>placeBlock(event,key)}>{editMode&&<div className="lego-controls" onDragStart={event=>event.stopPropagation()}><span className="lego-label">{blockLabels[key]}</span><button type="button" title="Mover à esquerda" aria-label={`Mover ${blockLabels[key]} à esquerda`} onClick={()=>nudgeBlock(key,-1,0)}>←</button><button type="button" title="Mover para cima" aria-label={`Mover ${blockLabels[key]} para cima`} onClick={()=>nudgeBlock(key,0,-1)}>↑</button><button type="button" title="Mover para baixo" aria-label={`Mover ${blockLabels[key]} para baixo`} onClick={()=>nudgeBlock(key,0,1)}>↓</button><button type="button" title="Mover à direita" aria-label={`Mover ${blockLabels[key]} à direita`} onClick={()=>nudgeBlock(key,1,0)}>→</button><button type="button" title="Diminuir largura" aria-label={`Diminuir largura de ${blockLabels[key]}`} onClick={()=>resizeBlock(key,-1)}>−</button><button type="button" title="Aumentar largura" aria-label={`Aumentar largura de ${blockLabels[key]}`} onClick={()=>resizeBlock(key,1)}>＋</button><button type="button" className="lego-hide" title="Ocultar bloco" aria-label={`Ocultar ${blockLabels[key]}`} onClick={event=>{event.stopPropagation();toggleSection(key)}}>× <span>Ocultar</span></button></div>}{content}</div>;
   }
   const backgroundImage=profile.backgroundUrl||profile.backgroundRemoteUrl;
   const designStyle={'--site-bg':design.background,'--site-surface':design.surface,'--site-accent':design.accent,'--site-secondary':design.secondary||'#b9ff4a','--site-text':design.text,'--site-font':design.font==='serif'?'Georgia,serif':design.font==='mono'?'ui-monospace,monospace':'Inter,system-ui,sans-serif','--gallery-columns':String(design.columns),'--card-radius':`${design.radius}px`,...(backgroundImage?{backgroundImage:`linear-gradient(#0b071080,#0b071080),url("${backgroundImage}")`,backgroundSize:'cover',backgroundPosition:'center',backgroundAttachment:'fixed'}:{})};
@@ -210,10 +235,11 @@ const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(f
   return <div className={`App${previewMode?' preview-mode':''}${editMode?' direct-edit-mode':''}`} style={designStyle}>
     {editMode&&<div className="edit-mode-toolbar" role="toolbar" aria-label="Opções de edição do site">
       <div className="edit-toolbar-main">
-        <div className="edit-toolbar-heading"><span className="edit-toolbar-mark">✎</span><div><strong>Seu site</strong><span>Edite os textos clicando neles.</span></div></div>
+        <div className="edit-toolbar-heading"><span className="edit-toolbar-mark">✎</span><div><strong>Seu site</strong><span>Edite textos e arraste os blocos pelo espaço.</span></div></div>
         <div className="edit-toolbar-actions">
           <button className={`toolbar-action ${appearanceOpen?'active':''}`} onClick={()=>{setAppearanceOpen(open=>!open);setSectionsOpen(false)}} aria-expanded={appearanceOpen}>🎨 <span>Aparência</span><i>{appearanceOpen?'−':'+'}</i></button>
           <button className={`toolbar-action ${sectionsOpen?'active':''}`} onClick={()=>{setSectionsOpen(open=>!open);setAppearanceOpen(false)}} aria-expanded={sectionsOpen}>▤ <span>Seções</span><i>{sectionsOpen?'−':'+'}</i></button>
+          <button className="toolbar-action" onClick={resetLayout} title="Voltar à organização inicial">▦ <span>Organizar</span></button>
           <label className="toolbar-action upload-background">▧ <span>Fundo / GIF</span><input type="file" accept="image/*" onChange={setBackground}/></label>
           {backgroundImage&&<button type="button" className="clear-site-background" onClick={clearBackground} aria-label="Remover fundo">×</button>}
           <button className="finish-edit" onClick={toggleEditMode}>Concluir</button>
@@ -237,9 +263,9 @@ const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(f
         <label className="appearance-select">Galeria<select value={design.columns} onChange={event=>setProfile(current=>({...current,design:{...current.design,columns:Number(event.target.value)}}))}><option value="2">2 colunas</option><option value="3">3 colunas</option><option value="4">4 colunas</option></select></label>
         <label className="appearance-range">Cantos<input type="range" min="0" max="40" value={design.radius} onChange={event=>setProfile(current=>({...current,design:{...current.design,radius:Number(event.target.value)}}))}/></label>
       </div>}
-      {sectionsOpen&&<div className="appearance-panel visibility-panel" aria-label="Peças que aparecem no site"><p className="lego-help">Marque para adicionar ou desmarque para ocultar. Segure qualquer bloco ou botão e arraste até outro bloco; use as setas para ajustar a ordem.</p>{[['header','Cabeçalho'],['avatar','Foto de perfil'],['name','Nome'],['handle','Usuário'],['role','Profissão'],['bio','Descrição'],['editButton','Botão de edição'],['musicShortcut','Atalho de música'],['worksShortcut','Atalho de trabalhos'],['socials','Redes sociais'],['social_twitch','　Twitch'],['social_instagram','　Instagram'],['social_tiktok','　TikTok'],['social_discord','　Discord'],['social_email','　E-mail'],['music','Música'],['commission','Comissões'],['quote','Solicitar orçamento'],['quoteDestination','Linha do destino (opcional)'],['portfolio','Galeria de trabalhos'],['footer','Rodapé']].map(([key,label])=><label key={key} className="visibility-option"><input type="checkbox" checked={Boolean(sections[key])} onChange={()=>toggleSection(key)}/><span>{label}</span></label>)}</div>}
+      {sectionsOpen&&<div className="appearance-panel visibility-panel" aria-label="Peças que aparecem no site"><p className="lego-help">Marque para adicionar ou desmarque para ocultar. Arraste qualquer bloco para uma posição livre; use as setas para mover e − / ＋ para ajustar a largura.</p>{[['header','Cabeçalho'],['avatar','Foto de perfil'],['name','Nome'],['handle','Usuário'],['role','Profissão'],['bio','Descrição'],['editButton','Botão de edição'],['musicShortcut','Atalho de música'],['worksShortcut','Atalho de trabalhos'],['socials','Redes sociais'],['social_twitch','　Twitch'],['social_instagram','　Instagram'],['social_tiktok','　TikTok'],['social_discord','　Discord'],['social_email','　E-mail'],['music','Música'],['commission','Comissões'],['quote','Solicitar orçamento'],['quoteDestination','Linha do destino (opcional)'],['portfolio','Galeria de trabalhos'],['footer','Rodapé']].map(([key,label])=><label key={key} className="visibility-option"><input type="checkbox" checked={Boolean(sections[key])} onChange={()=>toggleSection(key)}/><span>{label}</span></label>)}</div>}
     </div>}
-    <main id="profile" className="lego-layout">{layoutOrder.map(key=>renderBlock(key))}</main>
+    <main id="profile" className="lego-layout" ref={layoutRef} onDragOver={event=>{if(editMode){event.preventDefault();event.dataTransfer.dropEffect='move'}}} onDrop={event=>placeBlock(event)}>{layoutOrder.map(key=>renderBlock(key))}</main>
     {previewMode&&<button className="preview-return" onClick={()=>{setPreviewMode(false);setEditMode(true)}}>✎ Voltar ao editor</button>}
     <AnimatePresence>{selected&&<motion.div className="modal show" role="dialog" aria-modal="true" aria-label={selected.title} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={event=>event.target===event.currentTarget&&setSelected(null)}>
       <button className="close" aria-label="Fechar" onClick={()=>setSelected(null)}>×</button>
