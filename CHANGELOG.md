@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.2 — 2026-11-18
+- Troca da legenda permanente de foto por um lápis que aparece ao passar o mouse ou focar o avatar.
+
 ## 0.2.1 — 2026-11-18
 - Exibidos os nomes públicos sob cada ícone social.
 - Reduzido o tamanho do cabeçalho/avatar e ampliada a grade para três colunas em telas largas.

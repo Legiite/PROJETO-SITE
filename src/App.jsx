@@ -70,9 +70,9 @@ export default function App(){
     <Header onEdit={()=>setEditorOpen(true)} brand={Data.HeaderTitle}/>
     <main>
       <section className="hero" id="profile">
-        <button className="avatar" type="button" onClick={()=>avatarInput.current?.click()} aria-label="Adicionar ou trocar foto de perfil" title="Clique para trocar a foto">
-          {profile.avatar?<img src={profile.avatar} alt="Foto de perfil"/>:<><span>👻<i>♫</i></span><small>Adicionar foto</small></>}
-          {profile.avatar&&<small>Trocar foto</small>}
+        <button className="avatar" type="button" onClick={()=>avatarInput.current?.click()} aria-label="Adicionar ou trocar foto de perfil">
+          {profile.avatar?<img src={profile.avatar} alt="Foto de perfil"/>:<span className="avatar-placeholder">👻<i>♫</i></span>}
+          <span className="avatar-edit" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25Zm17.71-10.04a1 1 0 0 0 0-1.42l-2.5-2.5a1 1 0 0 0-1.42 0l-1.83 1.83 3.75 3.75 2-1.66Z"/></svg></span>
         </button>
         <input ref={avatarInput} className="visually-hidden" type="file" accept="image/png,image/jpeg,image/webp" onChange={setAvatar}/>
         <h1>{profile.name}</h1><a className="handle">@{(profile.handle||'').replace(/^@/,'')}</a>
