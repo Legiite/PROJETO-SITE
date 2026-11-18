@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.5.2 — 2026-11-18
+- Incluídos GIFs demonstrativos na galeria e no fundo animado do site, com opção de substituir/remover.
+- Melhorada e ampliada a informação de destino do botão de orçamento, com texto editável.
+- Adicionado tutorial rápido dentro do painel de edição.
+
 ## 0.5.0 — 2026-11-18
 - Ícone da seção Trabalhos atualizado para uma galeria.
 - Adicionada personalização dos ícones sociais com imagem, usando o mesmo lápis de troca de foto.
