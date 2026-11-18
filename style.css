@@ -139,4 +139,4 @@ footer{border-color:var(--site-line);color:var(--site-muted)}footer b{color:var(
 .lego-controls .lego-label{display:none}
 .lego-layout>.lego-block:hover{z-index:5}
 @media(max-width:700px){.lego-layout{grid-template-columns:repeat(6,minmax(0,1fr));column-gap:8px;row-gap:12px;padding:10px 12px}.lego-layout>.lego-block{grid-column:1/-1!important;grid-row:auto!important}.lego-controls{max-width:205px}}
-
+.direct-edit-mode .portfolio-section .art[draggable="true"]{cursor:grab;touch-action:none}.direct-edit-mode .portfolio-section .art[draggable="true"]:active{cursor:grabbing}
