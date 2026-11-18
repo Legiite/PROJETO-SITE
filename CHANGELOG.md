@@ -1,8 +1,13 @@
 # CHANGELOG
 
+## 0.6.6 — 2026-11-18
+- Compactados os controles de ocultar e reposicionar; eles aparecem no canto do bloco ao passar o mouse.
+- Permite arrastar o próprio bloco ou botão para reorganizar a página, mantendo obras agrupadas na galeria e contatos no bloco de redes.
+- A remoção continua disponível pelo × no bloco e pelo painel Seções.
+
 ## 0.6.5 — 2026-11-18
-- Tornados reordenáveis individualmente o cabeçalho, textos, atalhos, cartões sociais e artes da galeria.
-- Adicionadas alças para arrastar peças e mover os cartões sociais e banners sem abrir o editor de imagens.
+- Tornados reordenáveis individualmente o cabeçalho, textos, atalhos, contatos e artes da galeria.
+- Adicionadas alças para arrastar blocos e itens individuais sem abrir o editor de imagens.
 - Ajustado o texto dos banners para caber no cartão e exibidas imagens enviadas sem cortar as bordas.
 - Sincronizada a cor do botão “Editar no próprio site” com a paleta ativa.
 
