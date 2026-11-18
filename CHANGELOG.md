@@ -8,6 +8,10 @@
 - Adicionado fundo personalizado com suporte a GIF animado.
 - Reduzido o tamanho dos atalhos e controles de edição; priorizada a fonte de sistema legível.
 
+## 0.5.1 — 2026-11-18
+- Animação de subida com entrada escalonada nas artes da galeria e leve flutuação ao passar o mouse.
+- Corrigida a visualização das imagens e GIFs enviados à galeria.
+
 ## 0.4.0 — 2026-11-18
 - Destaque visual em cor contrastante para os atalhos do criador.
 - Painel de edição organizado em Site inteiro, Música e Trabalhos.
