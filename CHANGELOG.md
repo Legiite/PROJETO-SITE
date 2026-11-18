@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 0.5.0 — 2026-11-18
+- Ícone da seção Trabalhos atualizado para uma galeria.
+- Adicionada personalização dos ícones sociais com imagem, usando o mesmo lápis de troca de foto.
+- Padronizado o controle de troca de imagem no avatar e nos cartões sociais.
+- Música inicia mutada e só ativa o som após ação do visitante.
+- Adicionado fundo personalizado com suporte a GIF animado.
+- Reduzido o tamanho dos atalhos e controles de edição; priorizada a fonte de sistema legível.
+
 ## 0.4.0 — 2026-11-18
 - Destaque visual em cor contrastante para os atalhos do criador.
 - Painel de edição organizado em Site inteiro, Música e Trabalhos.
