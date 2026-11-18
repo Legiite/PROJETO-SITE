@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.5.5 — 2026-11-18
+- Aumentados avatar, títulos, cartões sociais e textos de contato em tablets e janelas estreitas.
+- Ampliados novamente os rótulos de redes e identificadores em celulares.
+
 ## 0.5.4 — 2026-11-18
 - Aumentada e adaptada a tipografia de celular, especialmente nos rótulos e identificadores das redes sociais.
 - Cartões de contato agora podem quebrar em mais de uma linha para manter nomes legíveis em telas estreitas.
