@@ -51,7 +51,7 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - Tutorial rápido disponível dentro do painel de edição; ele não aparece na página nem na prévia de visitante.
 - Upload de imagens e vídeos MP4/WebM na galeria; os vídeos abrem com controles no modal.
 - Música opcional com botão manual de reprodução. Não há reprodução automática.
-- No modo de edição, arraste as alças LEGO para reposicionar blocos, textos, contatos e artes; use “Seções” para adicionar ou ocultar itens.
+- No modo de edição, arraste as alças LEGO para reposicionar o cabeçalho, blocos, textos, contatos e artes; use “Seções” para adicionar ou ocultar itens.
 - Os banners ajustam o texto ao espaço disponível e exibem a imagem completa, preservando as bordas.
 - Perfil base e obras de demonstração centralizados em `src/Data.js`.
 - Texto e preferências ficam em `localStorage`; fotos, artes, vídeos e música ficam em IndexedDB no navegador atual.
