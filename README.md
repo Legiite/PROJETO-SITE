@@ -28,6 +28,9 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - Botão `+` na galeria para adicionar várias imagens e atalho no editor.
 - Clique no avatar para escolher a foto de perfil.
 - Twitch, Instagram, TikTok, Discord e E-mail mostram ícone, nome do serviço e usuário/endereço embaixo.
+- O avatar e os ícones de cada rede podem receber imagem personalizada; o mesmo lápis aparece ao passar o mouse.
+- Imagem ou GIF animado como fundo, com prévia, remoção e limite local de 20 MB.
+- A música começa pausada e mutada; o visitante ativa o som pelo botão “Ouvir música”.
 - Editor local para nome, usuário, especialidade, descrição, redes, cores, fonte, número de colunas e cantos dos cartões.
 - Seletor do destino do botão de orçamento (E-mail, Discord, Twitch, Instagram ou TikTok), com o canal e endereço exibidos abaixo do botão.
 - Painel do criador com atalhos coloridos para editar o site inteiro, música e trabalhos; lápis grande aparece no centro da arte ao passar o mouse.
