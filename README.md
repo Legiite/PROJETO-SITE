@@ -1,29 +1,37 @@
 # Ghostfolio
 
-Demonstração local de portfólio para artistas digitais, em português. Interface responsiva inspirada pela referência enviada. Este MVP roda sem backend e não finge autenticação ou publicação em nuvem.
+Portfólio demonstrativo para artistas digitais, feito com React e Vite a partir do template aberto [Portfolio Template for Artists](https://github.com/rakshixh/Portfolio-Template-For-Artists). A implementação mantém o visual Ghost Studio e adapta a estrutura de perfil e galeria do projeto de referência. Os créditos e a licença MIT original estão em [THIRD-PARTY-LICENSES.md](THIRD-PARTY-LICENSES.md).
 
-## Executar
+## Executar localmente
 
-Com Node.js instalado, entre nesta pasta no PowerShell e execute:
+Instale o [Node.js 22 ou superior](https://nodejs.org/) e, no PowerShell, execute uma vez:
 
 ```powershell
-node .\SERVIDOR.js
+npm install
+npm run dev
 ```
 
-Acesse http://localhost:4188. Use `Ctrl+C` para parar o servidor. Não requer dependências externas nem alteração da política de execução do PowerShell.
+Abra http://localhost:4190. O servidor fica disponível apenas no próprio computador. Use `Ctrl+C` para encerrá-lo.
 
-## Recursos disponíveis
+Para gerar os arquivos estáticos de publicação:
 
-- Página pública demonstrativa Ghost Studio com categorias e seis artes gráficas criadas em CSS.
-- Filtros por categoria, modal ampliado e navegação por teclado.
-- Editor local para nome, usuário, especialidade, descrição, links sociais e upload múltiplo de imagens.
-- Ícones com nomes visíveis para Twitch, Instagram, TikTok, Discord e E-mail.
-- Dados de demonstração centralizados em `profile.js` para facilitar a personalização pelo código.
-- Persistência no navegador usando localStorage; limite por arquivo: 5 MB.
-- Contato via e-mail e links sociais ilustrativos.
+```powershell
+npm run build
+```
 
-## Limitações e próximos passos
+Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando de build `npm run build`, o diretório de saída `dist` e mantenha o repositório privado.
 
-Login OAuth, Supabase, publicação e nomes de usuário públicos não estão configurados. O editor salva neste navegador; as alterações não são publicadas para outras pessoas. Upload local consome a quota do navegador e não é enviado a um servidor. GIFs podem ser selecionados como imagem; vídeo não é suportado no MVP. As artes de exemplo são composições CSS, não arquivos de imagem. Troque os links demonstrativos pelos perfis reais antes de publicar.
+## Funcionalidades da demonstração
 
-Veja [ROADMAP.md](ROADMAP.md), [SECURITY.md](SECURITY.md) e [TESTING.md](TESTING.md).
+- Página Ghost Studio adaptada à estrutura de perfil e galeria do template de referência.
+- Galeria com categorias, animações de entrada e visualização ampliada de artes.
+- Editor local para nome, usuário, especialidade, descrição, links sociais e upload de imagens.
+- Twitch, Instagram, TikTok, Discord e E-mail têm ícones reconhecíveis e rótulos visíveis.
+- Perfil base e obras de demonstração centralizados em `src/Data.js`.
+- O editor persiste alterações apenas no navegador atual usando `localStorage`.
+
+## Limitações
+
+Esta é uma demonstração estática. Login, banco de dados, publicação de alterações do editor e armazenamento compartilhado ainda não estão conectados. Os links `ghoststudio` são exemplos; informe seus endereços reais no editor. O atalho Discord fica desativado enquanto não houver um link de convite. Uploads ficam apenas no navegador e têm limite de 5 MB por arquivo.
+
+Veja [TESTING.md](TESTING.md), [SECURITY.md](SECURITY.md) e [ROADMAP.md](ROADMAP.md).
