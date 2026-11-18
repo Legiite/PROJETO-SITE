@@ -12,6 +12,15 @@ const PROFILE_KEY='ghostfolio.react.profile', WORKS_KEY='ghostfolio.react.works'
 function readJson(key,fallback){try{return JSON.parse(localStorage.getItem(key))||fallback}catch{return fallback}}
 function normalizeWork(work){return {...work,category:work.category||work.cat||'Trabalhos',text:(work.text||'').replace(/<br\s*\/?\s*>/gi,'\n'),kind:work.kind||'image'}}
 function fileUrl(file){return URL.createObjectURL(file)}
+function loadWorks(){
+  const previous=readJson('ghostfolio.works',null),saved=readJson(WORKS_KEY,previous||Data.works),items=saved.map(normalizeWork);
+  if(!localStorage.getItem('ghostfolio.demo-gif-seeded')){
+    const demo=Data.works.find(work=>work.id==='ghost-gif-demo');
+    if(demo&&!items.some(work=>work.id===demo.id))items.push(normalizeWork(demo));
+    localStorage.setItem('ghostfolio.demo-gif-seeded','1');
+  }
+  return items;
+}
 
 export default function App(){
   const [profile,setProfile]=useState(()=>{
@@ -19,10 +28,7 @@ export default function App(){
     for(const key of ['name','handle','role','bio']){const legacy=localStorage.getItem(`ghostfolio.in${key[0].toUpperCase()}${key.slice(1)}`);if(!migrated[key]&&legacy)migrated[key]=legacy}
     return {...Data,...migrated,socials:{...Data.socials,...(migrated.socials||{})},socialNames:{...Data.socialNames,...(migrated.socialNames||{})},socialIcons:{...(migrated.socialIcons||{})},design:{...Data.design,...(migrated.design||{})}};
   });
-  const [works,setWorks]=useState(()=>{
-    const previous=readJson('ghostfolio.works',null);
-    return (readJson(WORKS_KEY,previous||Data.works)).map(normalizeWork);
-  });
+  const [works,setWorks]=useState(loadWorks);
   const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(false),[editorSection,setEditorSection]=useState('site'),[previewMode,setPreviewMode]=useState(false),[selected,setSelected]=useState(null),[editingWork,setEditingWork]=useState(false),[musicPlaying,setMusicPlaying]=useState(false);
   const audioRef=useRef(null);
 
@@ -95,10 +101,10 @@ export default function App(){
     const file=event.target.files?.[0];if(!file)return;
     if(!file.type.startsWith('image/')){alert('Escolha uma imagem ou GIF para o fundo.');event.target.value='';return}
     if(file.size>20*1024*1024){alert('A imagem de fundo deve ter até 20 MB.');event.target.value='';return}
-    try{const mediaId=await saveMedia(file),backgroundUrl=fileUrl(file),oldId=profile.backgroundMediaId;setProfile(current=>({...current,backgroundMediaId:mediaId,backgroundUrl}));if(oldId)await deleteMedia(oldId)}catch{alert('Não foi possível guardar este fundo neste navegador.')}
+    try{const mediaId=await saveMedia(file),backgroundUrl=fileUrl(file),oldId=profile.backgroundMediaId;setProfile(current=>({...current,backgroundMediaId:mediaId,backgroundUrl,backgroundRemoteUrl:''}));if(oldId)await deleteMedia(oldId)}catch{alert('Não foi possível guardar este fundo neste navegador.')}
     event.target.value='';
   }
-  async function clearBackground(){if(profile.backgroundMediaId)await deleteMedia(profile.backgroundMediaId);setProfile(current=>({...current,backgroundMediaId:'',backgroundUrl:''}))}
+  async function clearBackground(){if(profile.backgroundMediaId)await deleteMedia(profile.backgroundMediaId);setProfile(current=>({...current,backgroundMediaId:'',backgroundUrl:'',backgroundRemoteUrl:''}))}
   async function setSocialIcon(key,event){
     const file=event.target.files?.[0];if(!file)return;
     if(!file.type.startsWith('image/')){alert('Escolha uma imagem para o ícone.');event.target.value='';return}
@@ -140,7 +146,7 @@ export default function App(){
   }
   async function reset(){
     if(!confirm('Restaurar a demonstração e apagar as alterações e mídias salvas neste navegador?'))return;
-    await clearMedia();localStorage.removeItem(PROFILE_KEY);localStorage.removeItem(WORKS_KEY);localStorage.removeItem('ghostfolio.profile');localStorage.removeItem('ghostfolio.works');location.reload();
+    await clearMedia();localStorage.removeItem(PROFILE_KEY);localStorage.removeItem(WORKS_KEY);localStorage.removeItem('ghostfolio.profile');localStorage.removeItem('ghostfolio.works');localStorage.removeItem('ghostfolio.demo-gif-seeded');location.reload();
   }
   async function toggleMusic(){
     if(!audioRef.current)return;
@@ -149,7 +155,8 @@ export default function App(){
   }
   const design=profile.design||Data.design;
   function openEditor(section='site'){setEditorSection(section);setEditorOpen(true)}
-  const designStyle={'--site-bg':design.background,'--site-surface':design.surface,'--site-accent':design.accent,'--site-text':design.text,'--site-font':design.font==='serif'?'Georgia,serif':design.font==='mono'?'ui-monospace,monospace':'Inter,system-ui,sans-serif','--gallery-columns':String(design.columns),'--card-radius':`${design.radius}px`,...(profile.backgroundUrl?{backgroundImage:`linear-gradient(#0b071080,#0b071080),url("${profile.backgroundUrl}")`,backgroundSize:'cover',backgroundPosition:'center',backgroundAttachment:'fixed'}:{})};
+  const backgroundImage=profile.backgroundUrl||profile.backgroundRemoteUrl;
+  const designStyle={'--site-bg':design.background,'--site-surface':design.surface,'--site-accent':design.accent,'--site-text':design.text,'--site-font':design.font==='serif'?'Georgia,serif':design.font==='mono'?'ui-monospace,monospace':'Inter,system-ui,sans-serif','--gallery-columns':String(design.columns),'--card-radius':`${design.radius}px`,...(backgroundImage?{backgroundImage:`linear-gradient(#0b071080,#0b071080),url("${backgroundImage}")`,backgroundSize:'cover',backgroundPosition:'center',backgroundAttachment:'fixed'}:{})};
 
   return <div className={`App${previewMode?' preview-mode':''}`} style={designStyle}>
     <Header onEdit={()=>openEditor('site')} brand={Data.HeaderTitle}/>
@@ -169,7 +176,7 @@ export default function App(){
           <span className="music-title">♫ {profile.musicName}</span>
         </div>}
         <p className="open"><i/> {profile.commissionText}</p>
-        {(()=>{const channel=profile.quoteChannel||'email',destination=profile.socials[channel]||'',label=channel==='email'?profile.socialNames.email||destination:profile.socialNames[channel]||destination;const href=channel==='email'?(destination?`mailto:${destination.replace(/^mailto:/,'')}?subject=Or%C3%A7amento%20Ghostfolio`:undefined):destination||undefined;const names={email:'e-mail',discord:'Discord',twitch:'Twitch',instagram:'Instagram',tiktok:'TikTok'};return <><a className={`quote ${destination?'':'disabled'}`} href={href} target={channel==='email'?undefined:'_blank'} rel={channel==='email'?undefined:'noreferrer'}>✎　Solicitar orçamento</a><p className="quote-destination">{destination?<>Você será direcionado para <strong>{names[channel]}</strong>: <span>{label}</span></>:<>Configure o destino do botão no editor para receber solicitações.</>}</p></>})()}
+        {(()=>{const channel=profile.quoteChannel||'email',destination=profile.socials[channel]||'',label=channel==='email'?profile.socialNames.email||destination:profile.socialNames[channel]||destination;const href=channel==='email'?(destination?`mailto:${destination.replace(/^mailto:/,'')}?subject=Or%C3%A7amento%20Ghostfolio`:undefined):destination||undefined;const names={email:'e-mail',discord:'Discord',twitch:'Twitch',instagram:'Instagram',tiktok:'TikTok'};return <><a className={`quote ${destination?'':'disabled'}`} href={href} target={channel==='email'?undefined:'_blank'} rel={channel==='email'?undefined:'noreferrer'}>✎　{profile.quoteButtonText||'Solicitar orçamento'}</a><div className={`quote-destination ${destination?'':'empty'}`}>{destination?<><span className="quote-destination-icon">↗</span><span>{profile.quoteNotice||'Abre'} <strong>{names[channel]}</strong><b>{label}</b></span></>:<>Configure um destino para o botão no painel do site.</>}</div></>})()}
       </section>
       <Portfolio works={works} filter={filter} onFilter={setFilter} onOpen={(work,edit=false)=>{setSelected(work);setEditingWork(edit)}} onAdd={addFiles}/>
     </main>
