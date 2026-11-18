@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.6.0 — 2026-11-18
+- Substituído o editor lateral de site inteiro por edição direta na página e barra horizontal de aparência.
+- Textos de perfil, cartões sociais e destino do orçamento podem ser alterados no lugar em que aparecem.
+- Controles de ícone e arte ficam visíveis no próprio elemento durante o modo de edição.
+
 ## 0.5.6 — 2026-11-18
 - Aumentados os textos pequenos do site em desktop: contatos, usuários, filtros, botões e legendas das artes.
 
