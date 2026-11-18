@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.6.2 — 2026-11-18
+- Refinado o modo de edição direta com bordas suaves e controles de ícone menos chamativos.
+- Tornado opcional o texto antes do destino do orçamento; sem texto, aparece só o canal e o endereço.
+
 ## 0.6.1 — 2026-11-18
 - Simplificada a barra de edição para ações principais e opções de aparência recolhidas.
 - Substituído o seletor de arquivo nativo por um botão estilizado de fundo/GIF.
