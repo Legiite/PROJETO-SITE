@@ -31,7 +31,7 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - Modo de edição direto no site: clique nos textos para alterar e nos cartões sociais para editar o link e o nome ali mesmo.
 - O painel Aparência oferece oito paletas combinadas, sincroniza as cores do site e permite ajustes personalizados por função.
 - O painel Seções permite ocultar ou exibir blocos como foto, redes, música, comissões, orçamento, galeria e rodapé.
-- No modo de edição, segure o próprio bloco ou botão e arraste-o para reposicionar; use as setas para ajustar e o × para ocultar. A linha de destino do orçamento fica oculta até ser adicionada.
+- No modo de edição, arraste cada bloco livremente pela grade, ajuste a largura com −/＋ e use × para ocultá-lo. “Organizar” restaura o layout inicial, e no celular os blocos se empilham. A linha de destino do orçamento fica oculta até ser adicionada.
 - O avatar e os ícones de cada rede podem receber imagem personalizada; o mesmo lápis aparece ao passar o mouse.
 - Imagem ou GIF animado como fundo, com prévia, remoção e limite local de 20 MB.
 - A demonstração já abre com um GIF roxo no fundo e um fantasma animado na categoria Animações; ambos podem ser trocados no editor. Os dois exemplos são carregados do GIPHY.
@@ -51,7 +51,7 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - Tutorial rápido disponível dentro do painel de edição; ele não aparece na página nem na prévia de visitante.
 - Upload de imagens e vídeos MP4/WebM na galeria; os vídeos abrem com controles no modal.
 - Música opcional com botão manual de reprodução. Não há reprodução automática.
-- No modo de edição, arraste o próprio cabeçalho, bloco ou botão para reposicioná-lo; os controles compactos aparecem no canto ao passar o mouse. Use “Seções” para adicionar ou ocultar itens.
+- No modo de edição, arraste os blocos livremente pelo site; os controles compactos aparecem no canto ao passar o mouse. Use “Seções” para adicionar ou ocultar itens.
 - Os banners ajustam o texto ao espaço disponível e exibem a imagem completa, preservando as bordas.
 - Perfil base e obras de demonstração centralizados em `src/Data.js`.
 - Texto e preferências ficam em `localStorage`; fotos, artes, vídeos e música ficam em IndexedDB no navegador atual.
