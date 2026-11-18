@@ -16,7 +16,7 @@ const Data = {
   quoteChannel: 'email',
   quoteButtonText: 'Solicitar orçamento',
   quoteNotice: '',
-  layoutOrder: ['avatar','name','handle','role','bio','editButton','musicShortcut','worksShortcut','socials','music','commission','quote','quoteDestination','portfolio','footer'],
+  layoutOrder: ['header','avatar','name','handle','role','bio','editButton','musicShortcut','worksShortcut','socials','music','commission','quote','quoteDestination','portfolio','footer'],
   socialOrder: ['twitch','instagram','tiktok','discord','email'],
   email: 'oi@ghoststudio.art',
   socials: {
@@ -35,6 +35,7 @@ const Data = {
   },
   socialIcons: {},
   sections: {
+    header: true,
     avatar: true,
     intro: true,
     name: true,
