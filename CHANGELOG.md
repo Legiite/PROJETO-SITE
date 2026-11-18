@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.4.0 — 2026-11-18
+- Destaque visual em cor contrastante para os atalhos do criador.
+- Painel de edição organizado em Site inteiro, Música e Trabalhos.
+- Lápis grande no centro da arte ao passar o mouse para editar diretamente.
+- Adicionada prévia do portfólio como visitante, sem controles de edição.
+
 ## 0.3.0 — 2026-11-18
 - Adicionado editor visual de cores, tipografia, colunas e cantos da galeria.
 - Adicionado seletor para o destino de solicitações de orçamento, com destino visível sob o botão.
