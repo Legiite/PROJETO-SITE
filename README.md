@@ -38,7 +38,9 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - Editor local para nome, usuário, especialidade, descrição, redes, cores, fonte, número de colunas e cantos dos cartões.
 - Seletor do destino do botão de orçamento (E-mail, Discord, Twitch, Instagram ou TikTok), com o canal e endereço exibidos abaixo do botão.
 - O texto do botão de orçamento e a explicação do destino podem ser editados no painel.
-- Painel do criador com atalhos coloridos para editar o site inteiro, música e trabalhos; lápis grande aparece no centro da arte ao passar o mouse.
+- Modo de edição no próprio site: nome, usuário, especialidade e descrição são editados no lugar; cores, fundo, fonte e galeria ficam numa barra horizontal no topo.
+- Redes abrem os campos de link e nome no próprio cartão; lápis de foto e de arte aparecem no elemento durante a edição.
+- Atalhos separados para música e trabalhos; lápis grande aparece no centro da arte ao passar o mouse em modo de edição.
 - Prévia visual do site como visitante, que oculta os controles de edição durante a apresentação.
 - Tutorial rápido disponível dentro do painel de edição; ele não aparece na página nem na prévia de visitante.
 - Upload de imagens e vídeos MP4/WebM na galeria; os vídeos abrem com controles no modal.
