@@ -1,6 +1,6 @@
 import ImageEditControl from './ImageEditControl';
 const channels={email:'E-mail',discord:'Discord',twitch:'Twitch',instagram:'Instagram',tiktok:'TikTok'};
-const sections=[['site','🎨','Site inteiro'],['music','♫','Música'],['works','🖼️','Trabalhos']];
+const sections=[['music','♫','Música'],['works','🖼️','Trabalhos']];
 export default function Editor({open,section='site',onSection=()=>{},onClose,onPreview=()=>{},profile,setProfile,onFiles,onAvatar,onBackground,onClearBackground,onMusic,onClearMusic,onReset}) {
   const update=(key,value)=>setProfile(current=>({...current,[key]:value}));
   const updateDesign=(key,value)=>setProfile(current=>({...current,design:{...current.design,[key]:value}}));
