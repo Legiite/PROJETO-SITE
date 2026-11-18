@@ -15,7 +15,7 @@ const Data = {
   commissionText: 'Comissões abertas',
   quoteChannel: 'email',
   quoteButtonText: 'Solicitar orçamento',
-  quoteNotice: 'Abre',
+  quoteNotice: '',
   email: 'oi@ghoststudio.art',
   socials: {
     twitch: 'https://www.twitch.tv/ghoststudio',
