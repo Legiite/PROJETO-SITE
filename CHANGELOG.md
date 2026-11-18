@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.5.3 — 2026-11-18
+- Compactado o cabeçalho e o perfil em telas grandes, com quatro artes por fileira para reduzir a rolagem inicial.
+- Atualizado o padrão de colunas dos perfis existentes sem preferência de densidade registrada.
+
 ## 0.5.2 — 2026-11-18
 - Incluídos GIFs demonstrativos na galeria e no fundo animado do site, com opção de substituir/remover.
 - Melhorada e ampliada a informação de destino do botão de orçamento, com texto editável.
