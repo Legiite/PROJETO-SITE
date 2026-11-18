@@ -22,7 +22,7 @@ export default function App(){
     const previous=readJson('ghostfolio.works',null);
     return (readJson(WORKS_KEY,previous||Data.works)).map(normalizeWork);
   });
-  const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(false),[selected,setSelected]=useState(null),[editingWork,setEditingWork]=useState(false),[musicPlaying,setMusicPlaying]=useState(false);
+  const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(false),[editorSection,setEditorSection]=useState('site'),[previewMode,setPreviewMode]=useState(false),[selected,setSelected]=useState(null),[editingWork,setEditingWork]=useState(false),[musicPlaying,setMusicPlaying]=useState(false);
   const avatarInput=useRef(null),audioRef=useRef(null),musicInput=useRef(null);
 
   useEffect(()=>{
@@ -128,10 +128,11 @@ export default function App(){
     else{audioRef.current.pause();setMusicPlaying(false)}
   }
   const design=profile.design||Data.design;
+  function openEditor(section='site'){setEditorSection(section);setEditorOpen(true)}
   const designStyle={'--site-bg':design.background,'--site-surface':design.surface,'--site-accent':design.accent,'--site-text':design.text,'--site-font':design.font==='serif'?'Georgia,serif':design.font==='mono'?'ui-monospace,monospace':'Inter,system-ui,sans-serif','--gallery-columns':String(design.columns),'--card-radius':`${design.radius}px`};
 
-  return <div className="App" style={designStyle}>
-    <Header onEdit={()=>setEditorOpen(true)} brand={Data.HeaderTitle}/>
+  return <div className={`App${previewMode?' preview-mode':''}`} style={designStyle}>
+    <Header onEdit={()=>openEditor('site')} brand={Data.HeaderTitle}/>
     <main>
       <section className="hero" id="profile">
         <button className="avatar" type="button" onClick={()=>avatarInput.current?.click()} aria-label="Adicionar ou trocar foto de perfil">
@@ -141,6 +142,7 @@ export default function App(){
         <input ref={avatarInput} className="visually-hidden" type="file" accept="image/png,image/jpeg,image/webp" onChange={setAvatar}/>
         <h1>{profile.name}</h1><a className="handle">@{(profile.handle||'').replace(/^@/,'')}</a>
         <p className="role">{profile.role}</p><p className="bio">{profile.bio}</p>
+        <div className="creator-shortcuts" aria-label="Atalhos de edição"><button className="creator-main" onClick={()=>openEditor('site')}>✎　Editar site inteiro</button><button onClick={()=>openEditor('music')}>♫　Música</button><button onClick={()=>openEditor('works')}>▦　Trabalhos</button></div>
         <SocialLinks socials={profile.socials} socialNames={profile.socialNames}/>
         {profile.musicUrl&&<div className="music-player">
           <audio ref={audioRef} src={profile.musicUrl} loop preload="none" onEnded={()=>setMusicPlaying(false)}/>
@@ -150,9 +152,10 @@ export default function App(){
         <p className="open"><i/> {profile.commissionText}</p>
         {(()=>{const channel=profile.quoteChannel||'email',destination=profile.socials[channel]||'',label=channel==='email'?profile.socialNames.email||destination:profile.socialNames[channel]||destination;const href=channel==='email'?(destination?`mailto:${destination.replace(/^mailto:/,'')}?subject=Or%C3%A7amento%20Ghostfolio`:undefined):destination||undefined;const names={email:'e-mail',discord:'Discord',twitch:'Twitch',instagram:'Instagram',tiktok:'TikTok'};return <><a className={`quote ${destination?'':'disabled'}`} href={href} target={channel==='email'?undefined:'_blank'} rel={channel==='email'?undefined:'noreferrer'}>✎　Solicitar orçamento</a><p className="quote-destination">{destination?<>Você será direcionado para <strong>{names[channel]}</strong>: <span>{label}</span></>:<>Configure o destino do botão no editor para receber solicitações.</>}</p></>})()}
       </section>
-      <Portfolio works={works} filter={filter} onFilter={setFilter} onOpen={work=>{setSelected(work);setEditingWork(false)}} onAdd={addFiles}/>
+      <Portfolio works={works} filter={filter} onFilter={setFilter} onOpen={(work,edit=false)=>{setSelected(work);setEditingWork(edit)}} onAdd={addFiles}/>
     </main>
     <footer>© 2026 {profile.name} · <b>{Data.FooterText}</b></footer>
+    {previewMode&&<button className="preview-return" onClick={()=>{setPreviewMode(false);openEditor('site')}}>✎ Voltar ao editor</button>}
     <AnimatePresence>{selected&&<motion.div className="modal show" role="dialog" aria-modal="true" aria-label={selected.title} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} onClick={event=>event.target===event.currentTarget&&setSelected(null)}>
       <button className="close" aria-label="Fechar" onClick={()=>setSelected(null)}>×</button>
       <button className="prev" aria-label="Arte anterior" onClick={()=>nextArt(-1)}>‹</button>
@@ -168,7 +171,7 @@ export default function App(){
       </div>}
       <button className="next" aria-label="Próxima arte" onClick={()=>nextArt(1)}>›</button>
     </motion.div>}</AnimatePresence>
-    <Editor open={editorOpen} onClose={()=>setEditorOpen(false)} profile={profile} setProfile={setProfile} onFiles={addFiles} onAvatar={setAvatar} onMusic={setMusic} onClearMusic={clearMusic} onReset={reset}/>
+    <Editor open={editorOpen} section={editorSection} onSection={setEditorSection} onClose={()=>setEditorOpen(false)} onPreview={()=>{setEditorOpen(false);setPreviewMode(true)}} profile={profile} setProfile={setProfile} onFiles={addFiles} onAvatar={setAvatar} onMusic={setMusic} onClearMusic={clearMusic} onReset={reset}/>
   </div>;
 }
 
