@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.6.7 — 2026-11-18
+- Substituída a lista vertical por uma grade livre de 12 colunas; cada peça salva sua posição e pode ser solta em espaços disponíveis.
+- Adicionados controles de largura e botão para restaurar a montagem inicial.
+- No celular, os blocos se empilham para manter o conteúdo legível.
+
 ## 0.6.6 — 2026-11-18
 - Compactados os controles de ocultar e reposicionar; eles aparecem no canto do bloco ao passar o mouse.
 - Permite arrastar o próprio bloco ou botão para reorganizar a página, mantendo obras agrupadas na galeria e contatos no bloco de redes.
