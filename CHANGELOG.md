@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.5.6 — 2026-11-18
+- Aumentados os textos pequenos do site em desktop: contatos, usuários, filtros, botões e legendas das artes.
+
 ## 0.5.5 — 2026-11-18
 - Aumentados avatar, títulos, cartões sociais e textos de contato em tablets e janelas estreitas.
 - Ampliados novamente os rótulos de redes e identificadores em celulares.
