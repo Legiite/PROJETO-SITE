@@ -38,7 +38,7 @@ const Data = {
     accent: '#c041ff',
     text: '#f8f3fa',
     font: 'system',
-    columns: 3,
+    columns: 4,
     radius: 22
   },
   musicMediaId: '',
