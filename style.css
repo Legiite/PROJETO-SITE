@@ -106,4 +106,27 @@ footer{border-color:var(--site-line);color:var(--site-muted)}footer b{color:var(
 .social-order-grab{position:absolute;z-index:6;top:3px;left:3px;display:grid;place-items:center;width:25px;height:25px;padding:0;border:1px solid var(--site-accent);border-radius:8px;background:color-mix(in srgb,var(--site-surface) 92%,transparent);color:var(--site-text);font-size:16px;cursor:grab}
 .socials .social-card.is-moving{opacity:.55;outline:2px dashed var(--site-accent);outline-offset:3px}
 .lego-header{padding:0}.lego-header .site-header{width:100%}
+/* Layout controls belong to each site block; keep their toolbar above the content. */
+.lego-block.lego-avatar,.lego-block.lego-shortcuts,.lego-block.lego-socials,.lego-block.lego-music,.lego-block.lego-commission,.lego-block.lego-quote,.lego-block.lego-quoteDestination,.lego-block.lego-portfolio,.lego-block.lego-footer{display:block!important}
+.lego-controls{position:relative;z-index:8;display:flex;align-items:center;justify-content:flex-end;gap:5px;width:100%;min-height:34px;margin:0 0 8px;padding:4px 7px;border:1px solid var(--site-line);border-radius:10px;background:color-mix(in srgb,var(--site-surface) 92%,var(--site-bg));opacity:1}
+.lego-controls .lego-label{margin-right:auto;color:var(--site-muted);font-size:11px;font-weight:700}
+.lego-controls button{min-width:30px;height:27px;border-color:var(--site-line);background:var(--site-surface);color:var(--site-text)}
+.lego-controls button:hover{border-color:var(--site-accent);color:var(--site-accent)}
+.lego-controls .lego-hide{display:flex;align-items:center;gap:4px;padding:0 9px;border-color:var(--site-accent);background:color-mix(in srgb,var(--site-accent) 18%,var(--site-surface));color:var(--site-text);font-size:12px}
+.lego-controls .lego-hide:hover{background:var(--site-accent);color:white}
+.direct-edit-mode .lego-block{cursor:grab}.direct-edit-mode .lego-block:active{cursor:grabbing}.direct-edit-mode .lego-block input,.direct-edit-mode .lego-block textarea,.direct-edit-mode .lego-controls{cursor:auto}
+@media(max-width:650px){.lego-controls{min-height:38px;gap:4px}.lego-controls .lego-label{font-size:10px}.lego-controls button{min-width:32px;height:30px}.lego-controls .lego-hide{font-size:11px}}
+/* Compact block controls: edit the full page without inserting a toolbar after every section. */
+.lego-controls{position:absolute;top:4px;right:4px;z-index:8;display:flex;align-items:center;justify-content:flex-end;gap:3px;width:auto;min-height:0;margin:0;padding:3px;border:1px solid color-mix(in srgb,var(--site-accent) 55%,transparent);border-radius:9px;background:color-mix(in srgb,var(--site-bg) 88%,var(--site-surface));box-shadow:0 3px 12px #0007;opacity:0;pointer-events:none;transition:opacity .14s}
+.direct-edit-mode .lego-block:hover>.lego-controls,.direct-edit-mode .lego-block:focus-within>.lego-controls{opacity:1;pointer-events:auto}
+.lego-controls .lego-label{display:none}
+.lego-controls button{min-width:23px;width:23px;height:23px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--site-text);font-size:13px}
+.lego-controls button:hover{background:color-mix(in srgb,var(--site-accent) 28%,transparent);color:var(--site-text)}
+.lego-controls .lego-hide{display:grid;place-items:center;min-width:23px;width:23px;height:23px;padding:0;border:0;background:var(--site-accent);color:white;font-size:15px;line-height:1}
+.lego-controls .lego-hide span{display:none}
+.direct-edit-mode .lego-block:hover{border-color:color-mix(in srgb,var(--site-accent) 42%,transparent);background:color-mix(in srgb,var(--site-surface) 16%,transparent)}
+.direct-edit-mode .lego-block:hover>.lego-controls{opacity:1}
+.direct-edit-mode .lego-block{cursor:grab}.direct-edit-mode .lego-block:active{cursor:grabbing}
+.direct-edit-mode .lego-block input,.direct-edit-mode .lego-block textarea,.direct-edit-mode .lego-controls{cursor:auto}
+@media(max-width:700px){.direct-edit-mode .lego-controls{top:2px;right:2px;opacity:.9;pointer-events:auto}.lego-controls button{min-width:27px;width:27px;height:27px}.lego-controls .lego-hide{min-width:27px;width:27px;height:27px}}
 
