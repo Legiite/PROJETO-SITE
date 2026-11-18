@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.6.1 — 2026-11-18
+- Simplificada a barra de edição para ações principais e opções de aparência recolhidas.
+- Substituído o seletor de arquivo nativo por um botão estilizado de fundo/GIF.
+
 ## 0.6.0 — 2026-11-18
 - Substituído o editor lateral de site inteiro por edição direta na página e barra horizontal de aparência.
 - Textos de perfil, cartões sociais e destino do orçamento podem ser alterados no lugar em que aparecem.
