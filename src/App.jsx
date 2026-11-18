@@ -203,8 +203,8 @@ const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(f
     else row=blocks.length?blocks.reduce((nearest,block)=>Math.abs(block.top-event.clientY)<Math.abs(nearest.top-event.clientY)?block:nearest,blocks[0]).row:0;
     setBlockPosition(draggingBlock,findFreePosition(draggingBlock,column,row,span));setDraggingBlock('');
   }
-  function resetLayout(){setProfile(current=>({...current,layoutPositions:{...Data.layoutPositions}}))}
-  function reorderWork(source,target){setWorks(current=>{const from=current.findIndex(work=>work.id===source),to=current.findIndex(work=>work.id===target);if(from<0||to<0||from===to)return current;const next=[...current];next.splice(to,0,next.splice(from,1)[0]);return next})}
+  function resetLayout(){setProfile(current=>({...current,layoutPositions:{...Data.layoutPositions}}));setWorks(current=>current.map(({layout,...work})=>work))}
+  function moveWorks(source,sourceLayout,target,targetLayout){setWorks(current=>current.map(work=>work.id===source?{...work,layout:sourceLayout}:work.id===target?{...work,layout:targetLayout}:work))}
   function renderBlock(key){
     let content=null;
     if(key==='header')content=<Header onEdit={toggleEditMode} editMode={editMode} sections={sections} brand={Data.HeaderTitle}/>;
@@ -224,7 +224,7 @@ const [filter,setFilter]=useState('Todos'),[editorOpen,setEditorOpen]=useState(f
       const channel=profile.quoteChannel||'email',destination=profile.socials[channel]||'',label=channel==='email'?profile.socialNames.email||destination:profile.socialNames[channel]||destination,names={email:'e-mail',discord:'Discord',twitch:'Twitch',instagram:'Instagram',tiktok:'TikTok'};
       content=editMode?<div className="quote-destination quote-inline-destination"><span className="quote-destination-icon">↗</span><input aria-label="Texto opcional antes do destino" placeholder="Texto opcional" value={profile.quoteNotice||''} onChange={event=>setProfile(current=>({...current,quoteNotice:event.target.value}))}/><select aria-label="Destino do orçamento" value={channel} onChange={event=>setProfile(current=>({...current,quoteChannel:event.target.value}))}>{Object.entries(names).map(([id,name])=><option key={id} value={id}>{name}</option>)}</select><b>{label}</b></div>:destination?<div className="quote-destination"><span className="quote-destination-icon">↗</span><span>{profile.quoteNotice?.trim()&&<strong>{profile.quoteNotice.trim()}</strong>}<b>{names[channel]}: {label}</b></span></div>:null;
     }
-    if(key==='portfolio')content=<Portfolio works={works} filter={filter} onFilter={setFilter} onOpen={(work,edit=false)=>{setSelected(work);setEditingWork(edit)}} onAdd={addFiles} onReorder={reorderWork} editable={editMode}/>;
+    if(key==='portfolio')content=<Portfolio works={works} filter={filter} onFilter={setFilter} onOpen={(work,edit=false)=>{setSelected(work);setEditingWork(edit)}} onAdd={addFiles} onMoveWorks={moveWorks} editable={editMode}/>;
     if(key==='footer')content=<footer>© 2026 {profile.name} · <b>{Data.FooterText}</b></footer>;
     if(!sections[key]||!content)return null;
     const position=layoutPositions[key]||Data.layoutPositions[key];
