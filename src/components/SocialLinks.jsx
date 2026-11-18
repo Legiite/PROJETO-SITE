@@ -5,16 +5,13 @@ import ImageEditControl from './ImageEditControl';
 
 const services=[['twitch','Twitch',faTwitch],['instagram','Instagram',faInstagram],['tiktok','TikTok',faTiktok],['discord','Discord',faDiscord],['email','E-mail',faEnvelope]];
 
-export default function SocialLinks({socials,socialNames,socialIcons={},socialOrder=[],visibleServices,onSocialOrderChange,onIconChange,editMode=false,editingSocial='',onEditSocial,onSocialChange}) {
-  const [draggingKey,setDraggingKey]=useState('');
-  const orderedServices=[...services].filter(([key])=>!visibleServices||visibleServices.includes(key)).sort((a,b)=>{const ai=socialOrder.indexOf(a[0]),bi=socialOrder.indexOf(b[0]);return (ai<0?services.findIndex(item=>item[0]===a[0]):ai)-(bi<0?services.findIndex(item=>item[0]===b[0]):bi)});
-  function dropSocial(target){if(!draggingKey||draggingKey===target)return;const order=orderedServices.map(([key])=>key),from=order.indexOf(draggingKey),to=order.indexOf(target);if(from<0||to<0)return;order.splice(to,0,order.splice(from,1)[0]);onSocialOrderChange?.(order);setDraggingKey('')}
+export default function SocialLinks({socials,socialNames,socialIcons={},visibleServices,onIconChange,editMode=false,editingSocial='',onEditSocial,onSocialChange}) {
+  const orderedServices=services.filter(([key])=>!visibleServices||visibleServices.includes(key));
   return <div className={`socials${editMode?' editing-socials':''}`} aria-label="Redes sociais e contato">
     {orderedServices.map(([key,label,icon])=>{
       const value=(socials[key]||'').trim(),href=key==='email'?(value?(value.startsWith('mailto:')?value:`mailto:${value}`):''):value;
       const valid=key==='email'?Boolean(href):/^https:\/\//i.test(href),editing=editMode&&editingSocial===key;
-      return <div className={`social-card${editing?' is-editing':''}${draggingKey===key?' is-moving':''}`} key={key} onDragOver={event=>{if(editMode){event.preventDefault();event.dataTransfer.dropEffect='move'}}} onDrop={event=>{event.preventDefault();dropSocial(key)}}>
-        {editMode&&<button type="button" className="social-order-grab" draggable title="Segure e arraste para mudar a ordem" aria-label={`Arrastar ${label}`} onDragStart={event=>{event.dataTransfer.effectAllowed='move';event.dataTransfer.setData('text/plain',`social:${key}`);setDraggingKey(key)}} onDragEnd={()=>setDraggingKey('')}>⠿</button>}
+      return <div className={`social-card${editing?' is-editing':''}`} key={key}>
         {editing?<div className="social-inline-card">
           <div className="social-inline-heading"><strong>{label}</strong><button type="button" aria-label="Concluir edição do contato" onClick={()=>onEditSocial?.('')}>✓</button></div>
           <label>Link ou e-mail<input autoFocus value={socials[key]||''} onChange={event=>onSocialChange?.(key,'link',event.target.value)}/></label>
@@ -33,5 +30,4 @@ export default function SocialLinks({socials,socialNames,socialIcons={},socialOr
     })}
   </div>;
 }
-import { useState } from 'react';
 
