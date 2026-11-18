@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.5.4 — 2026-11-18
+- Aumentada e adaptada a tipografia de celular, especialmente nos rótulos e identificadores das redes sociais.
+- Cartões de contato agora podem quebrar em mais de uma linha para manter nomes legíveis em telas estreitas.
+- Campos do editor ajustados para leitura e toque em dispositivos móveis.
+
 ## 0.5.3 — 2026-11-18
 - Compactado o cabeçalho e o perfil em telas grandes, com quatro artes por fileira para reduzir a rolagem inicial.
 - Atualizado o padrão de colunas dos perfis existentes sem preferência de densidade registrada.
