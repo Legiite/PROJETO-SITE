@@ -7,7 +7,10 @@ const Data = {
   role: 'Designer gráfico · Artista digital',
   bio: 'Transformando ideias em identidades visuais.',
   avatar: '',
+  avatarMediaId: '',
+  avatarUrl: '',
   commissionText: 'Comissões abertas',
+  quoteChannel: 'email',
   email: 'oi@ghoststudio.art',
   socials: {
     twitch: 'https://www.twitch.tv/ghoststudio',
@@ -23,6 +26,18 @@ const Data = {
     discord: '@ghoststudio',
     email: 'oi@ghoststudio.art'
   },
+  design: {
+    background: '#0b0710',
+    surface: '#150d1e',
+    accent: '#c041ff',
+    text: '#f8f3fa',
+    font: 'system',
+    columns: 3,
+    radius: 22
+  },
+  musicMediaId: '',
+  musicName: '',
+  musicUrl: '',
   works: [
     {id:'ghost',title:'Stream Offline — Ghost',category:'Layouts',style:'ghost',text:'STREAM\nOFFLINE',emoji:'👻'},
     {id:'bee',title:'Stream começando — Bee',category:'Layouts',style:'bee',text:'STREAM\nINICIANDO',emoji:'🐝'},
@@ -35,3 +50,4 @@ const Data = {
 };
 
 export default Data;
+
