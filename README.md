@@ -30,6 +30,8 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 - Twitch, Instagram, TikTok, Discord e E-mail mostram ícone, nome do serviço e usuário/endereço embaixo.
 - Editor local para nome, usuário, especialidade, descrição, redes, cores, fonte, número de colunas e cantos dos cartões.
 - Seletor do destino do botão de orçamento (E-mail, Discord, Twitch, Instagram ou TikTok), com o canal e endereço exibidos abaixo do botão.
+- Painel do criador com atalhos coloridos para editar o site inteiro, música e trabalhos; lápis grande aparece no centro da arte ao passar o mouse.
+- Prévia visual do site como visitante, que oculta os controles de edição durante a apresentação.
 - Upload de imagens e vídeos MP4/WebM na galeria; os vídeos abrem com controles no modal.
 - Música opcional com botão manual de reprodução. Não há reprodução automática.
 - Perfil base e obras de demonstração centralizados em `src/Data.js`.
@@ -37,7 +39,7 @@ Os arquivos prontos ficam em `dist/`. No Cloudflare Pages, configure o comando d
 
 ## Limitações
 
-Esta é uma demonstração estática. Login, banco de dados, publicação de alterações do editor e armazenamento compartilhado ainda não estão conectados. Personalizações e arquivos enviados ficam apenas neste navegador e não são sincronizados com outros dispositivos nem com visitantes do site publicado. Os links `ghoststudio` são exemplos; informe seus endereços reais no editor. Foto de perfil: até 5 MB. Imagens da galeria: até 25 MB cada; vídeos MP4/WebM: até 100 MB; música: até 30 MB.
+Esta é uma demonstração estática. Login individual, banco de dados, publicação de alterações do editor e armazenamento compartilhado ainda não estão conectados. A prévia de visitante só esconde os controles visualmente; ela não é um bloqueio de segurança. O código entregue ao navegador pode ser inspecionado, então chaves privadas nunca devem ser colocadas no frontend. A proteção real exige autenticação e regras de acesso no servidor. Personalizações e arquivos enviados ficam apenas neste navegador e não são sincronizados com outros dispositivos nem com visitantes do site publicado. Os links `ghoststudio` são exemplos; informe seus endereços reais no editor. Foto de perfil: até 5 MB. Imagens da galeria: até 25 MB cada; vídeos MP4/WebM: até 100 MB; música: até 30 MB.
 
 Veja [TESTING.md](TESTING.md), [SECURITY.md](SECURITY.md) e [ROADMAP.md](ROADMAP.md).
 
